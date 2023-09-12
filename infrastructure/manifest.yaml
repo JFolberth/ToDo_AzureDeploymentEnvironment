@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://github.com/Azure/deployment-environments/releases/download/2022-11-11-preview/manifest.schema.json
+name: PDFGPT
+version: 1.0.0
+summary: Architecture to support a simple chatbot reading pdfs
+description: Deploys open ai, acr, aci, form recognizer, and a user assigned identity
+runner: ARM
+templatePath: main.json
+
+parameters:
+  - id: baseName
+    name: Base Name for resources
+    description: 'Name of the service'
+    type: string
+    required: true
+  - id: location
+    name: Location for Resources
+    description: 'Location to deploy new resources into default is eastus'
+    type: string
+    required: false
