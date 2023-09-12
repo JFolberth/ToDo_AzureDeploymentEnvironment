@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "10233776338157337579"
+      "templateHash": "17782931668066928030"
     }
   },
   "parameters": {
@@ -31,12 +31,14 @@
     },
     "appServicePlanSKU": {
       "type": "string",
+      "defaultValue": "D1",
       "metadata": {
         "description": "App Service Plan Sku"
       }
     },
     "retentionDays": {
       "type": "int",
+      "defaultValue": 30,
       "metadata": {
         "description": "How many days to retain Log Analytics Logs"
       }

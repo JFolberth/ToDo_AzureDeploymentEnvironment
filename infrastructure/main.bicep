@@ -4,10 +4,10 @@ param location string
 param baseName string = 'iacflavorsbicepASP'
 @description('Three letter environment abreviation to denote environment that will appear in all resource names') 
 param environmentName string = 'dev'
-@description('App Service Plan Sku')
-param appServicePlanSKU string
+@description('App Service Plan Sku') 
+param appServicePlanSKU string = 'D1'
 @description('How many days to retain Log Analytics Logs')
-param retentionDays int
+param retentionDays int = 30
 
 
 var regionReference = {
