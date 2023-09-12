@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "17782931668066928030"
+      "templateHash": "944011461037431521"
     }
   },
   "parameters": {
@@ -36,11 +36,16 @@
         "description": "App Service Plan Sku"
       }
     },
-    "retentionDays": {
-      "type": "int",
-      "defaultValue": 30,
+    "logAnalyticsResourceGroup": {
+      "type": "string",
       "metadata": {
-        "description": "How many days to retain Log Analytics Logs"
+        "description": "Resource Group Log Analytics Workspace is in"
+      }
+    },
+    "logAnalyticsWorkspace": {
+      "type": "string",
+      "metadata": {
+        "description": "Log Analytics Workspace Name"
       }
     }
   },
@@ -290,98 +295,6 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "logAnalyticsModule",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "location": {
-            "value": "[parameters('location')]"
-          },
-          "logAnalyticsName": {
-            "value": "[variables('nameSuffix')]"
-          },
-          "language": {
-            "value": "[variables('language')]"
-          },
-          "retentionDays": {
-            "value": "[parameters('retentionDays')]"
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.17.1.54307",
-              "templateHash": "4968917919990629131"
-            }
-          },
-          "parameters": {
-            "logAnalyticsName": {
-              "type": "string",
-              "metadata": {
-                "description": "Name for the Log Analytics Workspace"
-              }
-            },
-            "location": {
-              "type": "string",
-              "metadata": {
-                "description": "Location for resource."
-              }
-            },
-            "retentionDays": {
-              "type": "int",
-              "defaultValue": 30,
-              "metadata": {
-                "description": "How Many Day to retain Log Analytics Logs"
-              }
-            },
-            "language": {
-              "type": "string",
-              "metadata": {
-                "description": "What Language was used to deploy this resource"
-              }
-            }
-          },
-          "resources": [
-            {
-              "type": "Microsoft.OperationalInsights/workspaces",
-              "apiVersion": "2022-10-01",
-              "name": "[toLower(format('la-{0}', parameters('logAnalyticsName')))]",
-              "location": "[parameters('location')]",
-              "tags": {
-                "displayName": "Log Analytics",
-                "Language": "[parameters('language')]"
-              },
-              "properties": {
-                "sku": {
-                  "name": "PerGB2018"
-                },
-                "retentionInDays": "[parameters('retentionDays')]",
-                "features": {
-                  "searchVersion": 1,
-                  "legacy": 0,
-                  "enableLogAccessUsingOnlyResourcePermissions": true
-                }
-              }
-            }
-          ],
-          "outputs": {
-            "logAnalyticsWorkspaceID": {
-              "type": "string",
-              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', toLower(format('la-{0}', parameters('logAnalyticsName'))))]"
-            }
-          }
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
       "name": "appInsightsModule",
       "properties": {
         "expressionEvaluationOptions": {
@@ -396,7 +309,7 @@
             "value": "[variables('nameSuffix')]"
           },
           "logAnalyticsWorkspaceID": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'logAnalyticsModule'), '2022-09-01').outputs.logAnalyticsWorkspaceID.value]"
+            "value": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('logAnalyticsResourceGroup')), 'Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspace'))]"
           },
           "language": {
             "value": "[variables('language')]"
@@ -462,10 +375,7 @@
             }
           }
         }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'logAnalyticsModule')]"
-      ]
+      }
     }
   ]
 }

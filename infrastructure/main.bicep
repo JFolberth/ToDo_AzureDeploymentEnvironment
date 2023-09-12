@@ -6,8 +6,10 @@ param baseName string = 'iacflavorsbicepASP'
 param environmentName string = 'dev'
 @description('App Service Plan Sku') 
 param appServicePlanSKU string = 'D1'
-@description('How many days to retain Log Analytics Logs')
-param retentionDays int = 30
+@description('Resource Group Log Analytics Workspace is in')
+param logAnalyticsResourceGroup string 
+@description('Log Analytics Workspace Name')
+param logAnalyticsWorkspace string
 
 
 var regionReference = {
@@ -19,6 +21,10 @@ var regionReference = {
 var nameSuffix = toLower('${baseName}-${environmentName}-${regionReference[location]}')
 var language = 'Bicep'
 
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+  name: logAnalyticsWorkspace
+  scope: resourceGroup(logAnalyticsResourceGroup)
+}
 
 module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appserviceplan:v1' ={
   name: 'appServicePlanModule'
@@ -41,22 +47,13 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
   }
 }
 
-module logAnalytics 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/loganalytics:v1' ={
-  name: 'logAnalyticsModule'
-  params:{
-    location: location
-    logAnalyticsName: nameSuffix
-    language: language
-    retentionDays: retentionDays
-  }
-}
 
 module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsights:v1' ={
   name: 'appInsightsModule'
   params:{
     location: location
     appInsightsName: nameSuffix
-    logAnalyticsWorkspaceID: logAnalytics.outputs.logAnalyticsWorkspaceID
+    logAnalyticsWorkspaceID: logAnalytics.id
     language: language
   }
 }
