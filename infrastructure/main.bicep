@@ -10,6 +10,10 @@ param appServicePlanSKU string = 'D1'
 param logAnalyticsResourceGroup string 
 @description('Log Analytics Workspace Name')
 param logAnalyticsWorkspace string
+@description('Resource Group CosmosDB is in')
+param cosmosDBResourceGroup string
+@description('CosmosDB Name')
+param cosmosDBName string
 
 
 var regionReference = {
@@ -24,6 +28,11 @@ var language = 'Bicep'
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspace
   scope: resourceGroup(logAnalyticsResourceGroup)
+}
+
+resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
+  name: cosmosDBName
+  scope: resourceGroup(cosmosDBResourceGroup)
 }
 
 module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appserviceplan:v1' ={
@@ -55,6 +64,15 @@ module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsigh
     appInsightsName: nameSuffix
     logAnalyticsWorkspaceID: logAnalytics.id
     language: language
+  }
+}
+
+module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' ={
+  name: 'cosmosRBACModule'
+  params: {
+    databaseAccountName: cosmosDB.name
+    databaseAccountResourceGroup: cosmosDBResourceGroup
+    principalId: appService.outputs.appServiceManagedIdentity
   }
 }
 
