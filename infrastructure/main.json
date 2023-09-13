@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "944011461037431521"
+      "templateHash": "3930022700381761210"
     }
   },
   "parameters": {
@@ -46,6 +46,18 @@
       "type": "string",
       "metadata": {
         "description": "Log Analytics Workspace Name"
+      }
+    },
+    "cosmosDBResourceGroup": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource Group CosmosDB is in"
+      }
+    },
+    "cosmosDBName": {
+      "type": "string",
+      "metadata": {
+        "description": "CosmosDB Name"
       }
     }
   },
@@ -216,8 +228,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.17.1.54307",
-              "templateHash": "4234201143386246265"
+              "version": "0.19.5.34762",
+              "templateHash": "3843771979151484542"
             }
           },
           "parameters": {
@@ -284,7 +296,13 @@
                 "[resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName'))))]"
               ]
             }
-          ]
+          ],
+          "outputs": {
+            "appServiceManagedIdentity": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName')))), '2022-09-01', 'full').identity.principalId]"
+            }
+          }
         }
       },
       "dependsOn": [
@@ -376,6 +394,71 @@
           }
         }
       }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "cosmosRBACModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "databaseAccountName": {
+            "value": "[parameters('cosmosDBName')]"
+          },
+          "databaseAccountResourceGroup": {
+            "value": "[parameters('cosmosDBResourceGroup')]"
+          },
+          "principalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServiceModule'), '2022-09-01').outputs.appServiceManagedIdentity.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.17.1.54307",
+              "templateHash": "4661773713138998300"
+            }
+          },
+          "parameters": {
+            "databaseAccountName": {
+              "type": "string"
+            },
+            "databaseAccountResourceGroup": {
+              "type": "string"
+            },
+            "roleDefinitionId": {
+              "type": "string",
+              "defaultValue": "00000000-0000-0000-0000-000000000002"
+            },
+            "principalId": {
+              "type": "string"
+            }
+          },
+          "variables": {
+            "roleAssignmentId": "[guid(parameters('roleDefinitionId'), parameters('principalId'), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('databaseAccountResourceGroup')), 'Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
+              "apiVersion": "2023-04-15",
+              "name": "[format('{0}/{1}', parameters('databaseAccountName'), variables('roleAssignmentId'))]",
+              "properties": {
+                "principalId": "[parameters('principalId')]",
+                "roleDefinitionId": "[parameters('roleDefinitionId')]"
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'appServiceModule')]"
+      ]
     }
   ]
 }
