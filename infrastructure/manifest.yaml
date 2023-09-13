@@ -33,7 +33,7 @@ parameters:
     type: string
     required: true
   - id: cosmosDBName
-    name: Log Analytics Workspace
+    name: Cosmos DB Name
     description: 'The Resource name for an existing Cosmos Database'
     type: string
     required: true

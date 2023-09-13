@@ -69,6 +69,7 @@ module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsigh
 
 module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' ={
   name: 'cosmosRBACModule'
+  scope: resourceGroup(cosmosDBResourceGroup)
   params: {
     databaseAccountName: cosmosDB.name
     databaseAccountResourceGroup: cosmosDBResourceGroup
