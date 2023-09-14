@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "3930022700381761210"
+      "templateHash": "5625968922316384953"
     }
   },
   "parameters": {
@@ -399,6 +399,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "cosmosRBACModule",
+      "resourceGroup": "[parameters('cosmosDBResourceGroup')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -406,10 +407,7 @@
         "mode": "Incremental",
         "parameters": {
           "databaseAccountName": {
-            "value": "[parameters('cosmosDBName')]"
-          },
-          "databaseAccountResourceGroup": {
-            "value": "[parameters('cosmosDBResourceGroup')]"
+            "value": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('cosmosDBResourceGroup')), 'Microsoft.DocumentDB/databaseAccounts', parameters('cosmosDBName'))]"
           },
           "principalId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServiceModule'), '2022-09-01').outputs.appServiceManagedIdentity.value]"
@@ -421,15 +419,12 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.17.1.54307",
-              "templateHash": "4661773713138998300"
+              "version": "0.21.1.54444",
+              "templateHash": "12677488580361381536"
             }
           },
           "parameters": {
             "databaseAccountName": {
-              "type": "string"
-            },
-            "databaseAccountResourceGroup": {
               "type": "string"
             },
             "roleDefinitionId": {
@@ -441,7 +436,7 @@
             }
           },
           "variables": {
-            "roleAssignmentId": "[guid(parameters('roleDefinitionId'), parameters('principalId'), extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('databaseAccountResourceGroup')), 'Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')))]"
+            "roleAssignmentId": "[guid(parameters('roleDefinitionId'), parameters('principalId'), parameters('databaseAccountName'))]"
           },
           "resources": [
             {
