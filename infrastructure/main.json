@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "12985794992629897307"
+      "templateHash": "1715059081534115252"
     }
   },
   "parameters": {
@@ -423,7 +423,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "18393610465269719506"
+              "templateHash": "9200745661733398542"
             }
           },
           "parameters": {
@@ -439,20 +439,59 @@
             },
             "principalId": {
               "type": "string"
+            },
+            "dataActions": {
+              "type": "array",
+              "defaultValue": [
+                "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+                "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*"
+              ],
+              "metadata": {
+                "description": "Data actions permitted by the Role Definition"
+              }
+            },
+            "roleDefinitionName": {
+              "type": "string",
+              "defaultValue": "My Read Write Role",
+              "metadata": {
+                "description": "Friendly name for the SQL Role Definition"
+              }
             }
           },
           "variables": {
-            "roleAssignmentId": "[guid(parameters('roleDefinitionId'), parameters('principalId'), resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')))]"
+            "roleAssignmentId": "[guid(parameters('roleDefinitionId'), parameters('principalId'), resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')))]",
+            "roleDefinition": "[guid('sql-role-definition-', parameters('principalId'), resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')))]"
           },
           "resources": [
+            {
+              "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+              "apiVersion": "2023-04-15",
+              "name": "[format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition'))]",
+              "properties": {
+                "roleName": "[parameters('roleDefinitionName')]",
+                "type": "CustomRole",
+                "assignableScopes": [
+                  "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName'))]"
+                ],
+                "permissions": [
+                  {
+                    "dataActions": "[parameters('dataActions')]"
+                  }
+                ]
+              }
+            },
             {
               "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
               "apiVersion": "2023-04-15",
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), variables('roleAssignmentId'))]",
               "properties": {
                 "principalId": "[parameters('principalId')]",
-                "roleDefinitionId": "[parameters('roleDefinitionId')]"
-              }
+                "roleDefinitionId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', split(format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition')), '/')[0], split(format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition')), '/')[1])]",
+                "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', split(format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition')), '/')[0], split(format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition')), '/')[1])]"
+              ]
             }
           ]
         }
