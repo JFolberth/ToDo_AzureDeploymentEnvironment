@@ -66,11 +66,13 @@ module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsigh
     language: language
   }
 }
+
 module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' ={
   name: 'cosmosRBACModule'
   scope: resourceGroup(cosmosDBResourceGroup)
   params: {
-    databaseAccountName: cosmosDB.id
+    databaseAccountName: cosmosDB.name
+    databaseAccountResourceGroup: cosmosDBResourceGroup
     principalId: appService.outputs.appServiceManagedIdentity
   }
 }

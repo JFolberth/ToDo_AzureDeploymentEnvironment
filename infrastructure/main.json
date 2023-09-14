@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "5625968922316384953"
+      "templateHash": "12985794992629897307"
     }
   },
   "parameters": {
@@ -407,7 +407,10 @@
         "mode": "Incremental",
         "parameters": {
           "databaseAccountName": {
-            "value": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('cosmosDBResourceGroup')), 'Microsoft.DocumentDB/databaseAccounts', parameters('cosmosDBName'))]"
+            "value": "[parameters('cosmosDBName')]"
+          },
+          "databaseAccountResourceGroup": {
+            "value": "[parameters('cosmosDBResourceGroup')]"
           },
           "principalId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServiceModule'), '2022-09-01').outputs.appServiceManagedIdentity.value]"
@@ -420,11 +423,14 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "12677488580361381536"
+              "templateHash": "18393610465269719506"
             }
           },
           "parameters": {
             "databaseAccountName": {
+              "type": "string"
+            },
+            "databaseAccountResourceGroup": {
               "type": "string"
             },
             "roleDefinitionId": {
@@ -436,7 +442,7 @@
             }
           },
           "variables": {
-            "roleAssignmentId": "[guid(parameters('roleDefinitionId'), parameters('principalId'), parameters('databaseAccountName'))]"
+            "roleAssignmentId": "[guid(parameters('roleDefinitionId'), parameters('principalId'), resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName')))]"
           },
           "resources": [
             {
