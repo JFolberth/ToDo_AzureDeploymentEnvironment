@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "7156383717415150838"
+      "templateHash": "3828045142045835190"
     }
   },
   "parameters": {
@@ -298,7 +298,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "10023666825232607665"
+              "templateHash": "4216484052747567898"
             }
           },
           "parameters": {
@@ -349,18 +349,12 @@
                 "serverFarmId": "[parameters('appServicePlanID')]",
                 "httpsOnly": true,
                 "siteConfig": {
-                  "minTlsVersion": "1.2"
+                  "minTlsVersion": "1.2",
+                  "appSettings": [
+                    "[parameters('appSettings')]"
+                  ]
                 }
               }
-            },
-            {
-              "type": "Microsoft.Web/sites/config",
-              "apiVersion": "2022-09-01",
-              "name": "[format('{0}/{1}', toLower(format('app-{0}', parameters('appServiceName'))), 'appsettings')]",
-              "properties": "[union(list(resourceId('Microsoft.Web/sites/config', toLower(format('app-{0}', parameters('appServiceName'))), 'appsettings'), '2022-09-01').properties, parameters('appSettings'))]",
-              "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName'))))]"
-              ]
             }
           ],
           "outputs": {
@@ -494,7 +488,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "10095243898729590182"
+              "templateHash": "9925952667495808157"
             }
           },
           "parameters": {
@@ -537,10 +531,10 @@
             {
               "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
               "apiVersion": "2023-04-15",
-              "name": "[format('{0}/{1}', parameters('databaseAccountName'), variables('roleAssignmentId'))]",
+              "name": "[variables('roleAssignmentId')]",
               "properties": {
                 "principalId": "[parameters('principalId')]",
-                "roleDefinitionId": "[format('/providers/Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions/{0}', parameters('roleDefinitionId'))]",
+                "roleDefinitionId": "[format('providers/Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions/{0}', parameters('roleDefinitionId'))]",
                 "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName'))]"
               }
             }
