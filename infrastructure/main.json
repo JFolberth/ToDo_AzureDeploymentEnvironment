@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "3828045142045835190"
+      "templateHash": "16193297460165781648"
     }
   },
   "parameters": {
@@ -298,7 +298,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "4216484052747567898"
+              "templateHash": "9162321565469313558"
             }
           },
           "parameters": {
@@ -351,7 +351,7 @@
                 "siteConfig": {
                   "minTlsVersion": "1.2",
                   "appSettings": [
-                    "[parameters('appSettings')]"
+                    "[format('{0}', parameters('appSettings'))]"
                   ]
                 }
               }
