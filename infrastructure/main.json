@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "1715059081534115252"
+      "templateHash": "12846498287615255432"
     }
   },
   "parameters": {
@@ -72,6 +72,68 @@
     "language": "Bicep"
   },
   "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "userAssignedIdentityModule",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "userIdentityName": {
+            "value": "[variables('nameSuffix')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.21.1.54444",
+              "templateHash": "5035894141760548385"
+            }
+          },
+          "parameters": {
+            "userIdentityName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name for the User Assigned Identity"
+              }
+            },
+            "location": {
+              "type": "string",
+              "metadata": {
+                "description": "Location for resource."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+              "apiVersion": "2023-01-31",
+              "name": "[toLower(format('ui-{0}', parameters('userIdentityName')))]",
+              "location": "[parameters('location')]"
+            }
+          ],
+          "outputs": {
+            "userIdentityPrincipalOutput": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', toLower(format('ui-{0}', parameters('userIdentityName')))), '2023-01-31').principalId]"
+            },
+            "userIdentityNameOutput": {
+              "type": "string",
+              "value": "[toLower(format('ui-{0}', parameters('userIdentityName')))]"
+            }
+          }
+        }
+      }
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
@@ -215,11 +277,14 @@
           "appServiceName": {
             "value": "[variables('nameSuffix')]"
           },
-          "appInsightsInstrumentationKey": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]"
+          "principalId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityPrincipalOutput.value]"
           },
-          "language": {
-            "value": "[variables('language')]"
+          "appSettings": {
+            "value": {
+              "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]",
+              "ConnnectionStirng": "[format('AccountEndpoint=https://{0}.documents.azure.com:443/;', parameters('cosmosDBName'))]"
+            }
           }
         },
         "template": {
@@ -228,8 +293,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.19.5.34762",
-              "templateHash": "3843771979151484542"
+              "version": "0.21.1.54444",
+              "templateHash": "10023666825232607665"
             }
           },
           "parameters": {
@@ -251,16 +316,18 @@
                 "description": "Resource ID of the App Service Plan"
               }
             },
-            "appInsightsInstrumentationKey": {
+            "principalId": {
               "type": "string",
+              "defaultValue": "",
               "metadata": {
-                "description": "Instrumentation Key for App Insights"
+                "description": "User Asisgned Identity for App Service"
               }
             },
-            "language": {
-              "type": "string",
+            "appSettings": {
+              "type": "object",
+              "defaultValue": {},
               "metadata": {
-                "description": "What language was used to deploy this resource"
+                "description": "App Settings for the Application"
               }
             }
           },
@@ -270,12 +337,9 @@
               "apiVersion": "2022-09-01",
               "name": "[toLower(format('app-{0}', parameters('appServiceName')))]",
               "location": "[parameters('location')]",
-              "identity": {
-                "type": "SystemAssigned"
-              },
+              "identity": "[if(empty(parameters('principalId')), createObject('type', 'SystemAssigned'), createObject('type', 'SystemAssigned, UserAssigned', 'userAssignedIdentities', createObject(format('{0}', parameters('principalId')), createObject())))]",
               "tags": {
-                "displayName": "Website",
-                "Language": "[parameters('language')]"
+                "displayName": "Website"
               },
               "properties": {
                 "serverFarmId": "[parameters('appServicePlanID')]",
@@ -287,11 +351,9 @@
             },
             {
               "type": "Microsoft.Web/sites/config",
-              "apiVersion": "2022-03-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('{0}/{1}', toLower(format('app-{0}', parameters('appServiceName'))), 'appsettings')]",
-              "properties": {
-                "APPINSIGHTS_INSTRUMENTATIONKEY": "[parameters('appInsightsInstrumentationKey')]"
-              },
+              "properties": "[union(list(resourceId('Microsoft.Web/sites/config', toLower(format('app-{0}', parameters('appServiceName'))), 'appsettings'), '2022-09-01').properties, parameters('appSettings'))]",
               "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName'))))]"
               ]
@@ -301,13 +363,18 @@
             "appServiceManagedIdentity": {
               "type": "string",
               "value": "[reference(resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName')))), '2022-09-01', 'full').identity.principalId]"
+            },
+            "appServiceName": {
+              "type": "string",
+              "value": "[toLower(format('app-{0}', parameters('appServiceName')))]"
             }
           }
         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'appInsightsModule')]",
-        "[resourceId('Microsoft.Resources/deployments', 'appServicePlanModule')]"
+        "[resourceId('Microsoft.Resources/deployments', 'appServicePlanModule')]",
+        "[resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
       ]
     },
     {
@@ -413,7 +480,7 @@
             "value": "[parameters('cosmosDBResourceGroup')]"
           },
           "principalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServiceModule'), '2022-09-01').outputs.appServiceManagedIdentity.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityPrincipalOutput.value]"
           }
         },
         "template": {
@@ -497,7 +564,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'appServiceModule')]"
+        "[resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
       ]
     }
   ]
