@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "12846498287615255432"
+      "templateHash": "7156383717415150838"
     }
   },
   "parameters": {
@@ -96,7 +96,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "5035894141760548385"
+              "templateHash": "8742261869599076453"
             }
           },
           "parameters": {
@@ -129,6 +129,10 @@
             "userIdentityNameOutput": {
               "type": "string",
               "value": "[toLower(format('ui-{0}', parameters('userIdentityName')))]"
+            },
+            "userIdentityResrouceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', toLower(format('ui-{0}', parameters('userIdentityName'))))]"
             }
           }
         }
@@ -278,7 +282,7 @@
             "value": "[variables('nameSuffix')]"
           },
           "principalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityPrincipalOutput.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityResrouceId.value]"
           },
           "appSettings": {
             "value": {
@@ -490,7 +494,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "9200745661733398542"
+              "templateHash": "10095243898729590182"
             }
           },
           "parameters": {
@@ -531,34 +535,14 @@
           },
           "resources": [
             {
-              "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
-              "apiVersion": "2023-04-15",
-              "name": "[format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition'))]",
-              "properties": {
-                "roleName": "[parameters('roleDefinitionName')]",
-                "type": "CustomRole",
-                "assignableScopes": [
-                  "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName'))]"
-                ],
-                "permissions": [
-                  {
-                    "dataActions": "[parameters('dataActions')]"
-                  }
-                ]
-              }
-            },
-            {
               "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
               "apiVersion": "2023-04-15",
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), variables('roleAssignmentId'))]",
               "properties": {
                 "principalId": "[parameters('principalId')]",
-                "roleDefinitionId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', split(format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition')), '/')[0], split(format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition')), '/')[1])]",
+                "roleDefinitionId": "[format('/providers/Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions/{0}', parameters('roleDefinitionId'))]",
                 "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName'))]"
-              },
-              "dependsOn": [
-                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', split(format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition')), '/')[0], split(format('{0}/{1}', parameters('databaseAccountName'), variables('roleDefinition')), '/')[1])]"
-              ]
+              }
             }
           ]
         }

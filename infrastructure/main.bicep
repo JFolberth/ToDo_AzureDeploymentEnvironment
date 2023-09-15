@@ -34,7 +34,7 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
-module userAssignedIdenttiy 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/userassignedidentity:v1' ={
+module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/userassignedidentity:v1' ={
   name: 'userAssignedIdentityModule'
   params:{
     location: location
@@ -58,7 +58,7 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
     location: location
     appServicePlanID: appServicePlan.outputs.appServicePlanID
     appServiceName: nameSuffix
-    principalId: userAssignedIdenttiy.outputs.userIdentityPrincipalOutput
+    principalId: userAssignedIdentity.outputs.userIdentityResrouceId
     appSettings: {
       APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.outputs.appInsightsInstrumentationKey
       ConnnectionStirng: 'AccountEndpoint=https://${cosmosDB.name}.documents.azure.com:443/;'
@@ -83,7 +83,7 @@ module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqld
   params: {
     databaseAccountName: cosmosDB.name
     databaseAccountResourceGroup: cosmosDBResourceGroup
-    principalId: userAssignedIdenttiy.outputs.userIdentityPrincipalOutput
+    principalId: userAssignedIdentity.outputs.userIdentityPrincipalOutput
   }
 }
 
