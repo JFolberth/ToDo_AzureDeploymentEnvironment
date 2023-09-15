@@ -60,8 +60,8 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
     appServiceName: nameSuffix
     principalId: userAssignedIdentity.outputs.userIdentityResrouceId
     appSettings: {
-      APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.outputs.appInsightsInstrumentationKey
-      ConnnectionStirng: 'AccountEndpoint=https://${cosmosDB.name}.documents.azure.com:443/;'
+      'APPINSIGHTS_INSTRUMENTATIONKEY': appInsights.outputs.appInsightsInstrumentationKey
+      'ConnnectionString': 'AccountEndpoint=https://${cosmosDB.name}.documents.azure.com:443/;'
     }
   }
 }

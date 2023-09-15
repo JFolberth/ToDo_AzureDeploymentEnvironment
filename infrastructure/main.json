@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "16193297460165781648"
+      "templateHash": "15872464640108246257"
     }
   },
   "parameters": {
@@ -287,7 +287,7 @@
           "appSettings": {
             "value": {
               "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]",
-              "ConnnectionStirng": "[format('AccountEndpoint=https://{0}.documents.azure.com:443/;', parameters('cosmosDBName'))]"
+              "ConnnectionString": "[format('AccountEndpoint=https://{0}.documents.azure.com:443/;', parameters('cosmosDBName'))]"
             }
           }
         },
@@ -298,7 +298,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "9162321565469313558"
+              "templateHash": "4216484052747567898"
             }
           },
           "parameters": {
@@ -351,7 +351,7 @@
                 "siteConfig": {
                   "minTlsVersion": "1.2",
                   "appSettings": [
-                    "[format('{0}', parameters('appSettings'))]"
+                    "[parameters('appSettings')]"
                   ]
                 }
               }
