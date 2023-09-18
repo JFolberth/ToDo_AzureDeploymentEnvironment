@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "8869638274358283866"
+      "templateHash": "7518693614913836679"
     }
   },
   "parameters": {
@@ -298,7 +298,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "4476359194076774794"
+              "templateHash": "4136477540675855306"
             }
           },
           "parameters": {
@@ -349,9 +349,21 @@
                 "serverFarmId": "[parameters('appServicePlanID')]",
                 "httpsOnly": true,
                 "siteConfig": {
-                  "minTlsVersion": "1.2"
+                  "minTlsVersion": "1.2",
+                  "appSettings": [
+                    "[parameters('appSettings')]"
+                  ]
                 }
               }
+            },
+            {
+              "type": "Microsoft.Web/sites/config",
+              "apiVersion": "2022-09-01",
+              "name": "[format('{0}/{1}', toLower(format('app-{0}', parameters('appServiceName'))), 'appsettings')]",
+              "properties": "[parameters('appSettings')]",
+              "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName'))))]"
+              ]
             }
           ],
           "outputs": {
