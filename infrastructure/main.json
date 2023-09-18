@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "15929933298982375100"
+      "templateHash": "18397956095248671095"
     }
   },
   "parameters": {
@@ -488,7 +488,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "1719687732437273314"
+              "templateHash": "1729550539667574121"
             }
           },
           "parameters": {
@@ -534,7 +534,7 @@
               "name": "[format('{0}/{1}', parameters('databaseAccountName'), variables('roleAssignmentId'))]",
               "properties": {
                 "principalId": "[parameters('principalId')]",
-                "roleDefinitionId": "[format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}/sqlRoleDefinitions/{3}', subscription().id, parameters('databaseAccountResourceGroup'), parameters('databaseAccountName'), parameters('roleDefinitionId'))]",
+                "roleDefinitionId": "[format('/{0}/resourceGroups/{1}/providers/Microsoft.DocumentDB/databaseAccounts/{2}/sqlRoleDefinitions/{3}', subscription().id, parameters('databaseAccountResourceGroup'), parameters('databaseAccountName'), parameters('roleDefinitionId'))]",
                 "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccountName'))]"
               }
             }
