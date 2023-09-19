@@ -25,6 +25,7 @@ var regionReference = {
 var nameSuffix = toLower('${baseName}-${environmentName}-${regionReference[location]}')
 var language = 'Bicep'
 
+
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspace
   scope: resourceGroup(logAnalyticsResourceGroup)
