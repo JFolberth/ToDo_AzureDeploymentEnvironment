@@ -32,7 +32,7 @@ stages:
     templateDirectory: ${{ parameters.templateDirectory }}
     
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
-  - template: stages/bicep_deploy_stage_w_environments.yml@templates
+  - template: stages/bicep_deploy_stage.yml@templates
     parameters:
       environmentObjects: ${{ parameters.environmentObjects }}
       templateFileName: ${{ parameters.templateFileName }}
