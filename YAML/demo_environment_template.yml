@@ -2,7 +2,7 @@ parameters:
 - name: environmentObjects
   type: object
   default:
-    - environmentName: 'dev'
+    - environmentName: 'dev2'
       regionAbrvs: ['eus']
 - name: templateFileName
   type: string
