@@ -13,7 +13,7 @@ parameters:
 - name: serviceName
   type: string
   default: 'deploy231'
-- name: adeObject
+- name: adeObjects
   type: object
   default:
     - devCenterName: 'dc-poc-dev-eus'
@@ -25,7 +25,7 @@ parameters:
 stages:
 - template: stages/bicep_build_stage.yml@templates
   parameters:
-    adeObject: ${{ parameters.adeObject }}
+    adeObjects: ${{ parameters.adeObjects }}
     environmentObjects: ${{ parameters.environmentObjects }}
     templateFileName: ${{ parameters.templateFileName }}
     serviceName: ${{ parameters.serviceName }}
