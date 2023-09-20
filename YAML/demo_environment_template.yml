@@ -25,7 +25,6 @@ parameters:
 stages:
 - template: stages/bicep_build_stage.yml@templates
   parameters:
-    adeObjects: ${{ parameters.adeObjects }}
     environmentObjects: ${{ parameters.environmentObjects }}
     templateFileName: ${{ parameters.templateFileName }}
     serviceName: ${{ parameters.serviceName }}
