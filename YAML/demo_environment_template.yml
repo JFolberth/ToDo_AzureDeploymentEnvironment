@@ -12,7 +12,7 @@ parameters:
   default: 'infrastructure'
 - name: serviceName
   type: string
-  default: 'deploy231'
+  default: 'adecosmosapp'
 - name: adeObjects
   type: object
   default:
