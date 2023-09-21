@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "16107644501187003624"
+      "templateHash": "16703942180946397139"
     }
   },
   "parameters": {
@@ -91,7 +91,7 @@
       "condition": "[and(empty(parameters('devCenterProjectName')), empty(parameters('adeName')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "resourceGroupModule",
+      "name": "[format('resourceGroupModule{0}', variables('nameSuffix'))]",
       "location": "[deployment().location]",
       "properties": {
         "expressionEvaluationOptions": {

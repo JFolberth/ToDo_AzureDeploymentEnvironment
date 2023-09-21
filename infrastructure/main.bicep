@@ -43,7 +43,7 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   scope: resourceGroup(cosmosDBResourceGroup)
 }
 module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(empty(devCenterProjectName) && empty(adeName)) {
-  name: 'resourceGroupModule'
+  name: 'resourceGroupModule${nameSuffix}'
   params:{
     baseName:('rg-${nameSuffix}')
     location: location
