@@ -26,6 +26,7 @@ var nameSuffix = toLower('${baseName}-${environmentName}-${regionReference[locat
 var language = 'Bicep'
 
 
+
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspace
   scope: resourceGroup(logAnalyticsResourceGroup)
@@ -35,6 +36,16 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
+module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = {
+  name: 'resourceGroupModule'
+  params:{
+    baseName:('rg-${nameSuffix}')
+    location: location
+    tags:{}
+    }
+    scope: subscription()
+  }
+
 module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/userassignedidentity:v1' ={
   name: 'userAssignedIdentityModule'
   params:{
