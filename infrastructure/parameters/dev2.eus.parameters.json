@@ -11,9 +11,6 @@
       "appServicePlanSKU":{
         "value":"D1"
       },
-      "retentionDays":{
-        "value": 30
-      },
       "logAnalyticsResourceGroup":{
       "value": "rg-logging-dev-eus"
       },
