@@ -13,6 +13,18 @@
       },
       "retentionDays":{
         "value": 30
-      }
+      },
+      "logAnalyticsResourceGroup":{
+      "value": "rg-logging-dev-eus"
+      },
+      "logAnalyticsWorkspace":{
+        "value": "la-logging-dev-eus"
+        },
+      "cosmosDBResourceGroup":{
+        "value": "rg-webdata-dev-eus"
+        },
+      "cosmosDBName":{
+        "value": "cosmoswebdatadeveus"
+        }
     }
   }
