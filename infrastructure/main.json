@@ -1,11 +1,11 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "18034555354986953577"
+      "templateHash": "4351345232842382798"
     }
   },
   "parameters": {
@@ -59,6 +59,20 @@
       "metadata": {
         "description": "CosmosDB Name"
       }
+    },
+    "devCenterProjectName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Dev Center Project Name"
+      }
+    },
+    "adeName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name for the Azure Deployment Environment"
+      }
     }
   },
   "variables": {
@@ -68,18 +82,17 @@
       "westus": "wus",
       "westus2": "wus2"
     },
-    "nameSuffix": "[toLower(format('{0}-{1}-{2}', parameters('baseName'), parameters('environmentName'), variables('regionReference')[parameters('location')]))]",
     "language": "Bicep",
-    "tags": "[resourceGroup().tags]"
+    "nameSuffix": "[if(and(empty(parameters('devCenterProjectName')), empty(parameters('adeName'))), format('{0}-{1}', parameters('devCenterProjectName'), parameters('adeName')), toLower(format('{0}-{1}-{2}', parameters('baseName'), parameters('environmentName'), variables('regionReference')[parameters('location')])))]",
+    "rgName": "[format('rg-{0}', variables('nameSuffix'))]"
   },
   "resources": [
     {
-      "condition": "[not(contains(variables('tags'), 'AdeDevCenterName'))]",
+      "condition": "[and(empty(parameters('devCenterProjectName')), empty(parameters('adeName')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "resourceGroupModule",
-      "subscriptionId": "[subscription().subscriptionId]",
-      "location": "[resourceGroup().location]",
+      "location": "[deployment().location]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -144,6 +157,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "userAssignedIdentityModule",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -210,6 +224,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "appServicePlanModule",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -334,6 +349,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "appServiceModule",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -344,17 +360,17 @@
             "value": "[parameters('location')]"
           },
           "appServicePlanID": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServicePlanModule'), '2022-09-01').outputs.appServicePlanID.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appServicePlanModule'), '2022-09-01').outputs.appServicePlanID.value]"
           },
           "appServiceName": {
             "value": "[variables('nameSuffix')]"
           },
           "principalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityResrouceId.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityResrouceId.value]"
           },
           "appSettings": {
             "value": {
-              "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]",
+              "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]",
               "ConnnectionString": "[format('AccountEndpoint=https://{0}.documents.azure.com:443/;', parameters('cosmosDBName'))]"
             }
           }
@@ -447,15 +463,16 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'appInsightsModule')]",
-        "[resourceId('Microsoft.Resources/deployments', 'appServicePlanModule')]",
-        "[resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appInsightsModule')]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appServicePlanModule')]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "appInsightsModule",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -555,7 +572,7 @@
             "value": "[parameters('cosmosDBResourceGroup')]"
           },
           "principalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityPrincipalOutput.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityPrincipalOutput.value]"
           }
         },
         "template": {
@@ -619,7 +636,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
       ]
     }
   ]

@@ -14,6 +14,10 @@ param logAnalyticsWorkspace string
 param cosmosDBResourceGroup string
 @description('CosmosDB Name')
 param cosmosDBName string
+@description('Dev Center Project Name')
+param devCenterProjectName string =''
+@description('Name for the Azure Deployment Environment')
+param adeName string = ''
 
 
 var regionReference = {
@@ -22,24 +26,23 @@ var regionReference = {
   westus: 'wus'
   westus2: 'wus2'
 }
-var nameSuffix = toLower('${baseName}-${environmentName}-${regionReference[location]}')
+
 var language = 'Bicep'
-var tags = resourceGroup().tags
 
-
-
+targetScope = 'subscription'
+var nameSuffix = empty(devCenterProjectName) && empty(adeName) ? '${devCenterProjectName}-${adeName}': toLower('${baseName}-${environmentName}-${regionReference[location]}') 
+var rgName = 'rg-${nameSuffix}'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspace
   scope: resourceGroup(logAnalyticsResourceGroup)
 }
 
-
 resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
-module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(!contains(tags,'AdeDevCenterName')) {
+module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(empty(devCenterProjectName) && empty(adeName)) {
   name: 'resourceGroupModule'
   params:{
     baseName:('rg-${nameSuffix}')
@@ -55,6 +58,7 @@ module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/
     location: location
     userIdentityName: nameSuffix
   }
+  scope: resourceGroup(rgName)
 }
 
 module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appserviceplan:v1' ={
@@ -65,6 +69,7 @@ module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appser
     language: language
     appServicePlanSKU: appServicePlanSKU
   }
+  scope: resourceGroup(rgName)
 }
 
 module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice:v1' ={
@@ -79,6 +84,7 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
       'ConnnectionString': 'AccountEndpoint=https://${cosmosDB.name}.documents.azure.com:443/;'
     }
   }
+  scope: resourceGroup(rgName)
 }
 
 
@@ -90,6 +96,7 @@ module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsigh
     logAnalyticsWorkspaceID: logAnalytics.id
     language: language
   }
+  scope: resourceGroup(rgName)
 }
 
 module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' ={
