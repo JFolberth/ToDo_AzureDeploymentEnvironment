@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "13954786608383754951"
+      "templateHash": "18034555354986953577"
     }
   },
   "parameters": {
@@ -74,6 +74,7 @@
   },
   "resources": [
     {
+      "condition": "[not(contains(variables('tags'), 'AdeDevCenterName'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "resourceGroupModule",

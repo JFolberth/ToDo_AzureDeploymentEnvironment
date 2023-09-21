@@ -29,7 +29,7 @@ var tags = resourceGroup().tags
 
 
 
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = if(!contains(tags,'AdeDevCenterName')) {
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspace
   scope: resourceGroup(logAnalyticsResourceGroup)
 }
@@ -39,7 +39,7 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
-module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = {
+module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(!contains(tags,'AdeDevCenterName')) {
   name: 'resourceGroupModule'
   params:{
     baseName:('rg-${nameSuffix}')
