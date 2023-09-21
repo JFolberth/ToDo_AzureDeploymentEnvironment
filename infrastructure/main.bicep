@@ -24,13 +24,16 @@ var regionReference = {
 }
 var nameSuffix = toLower('${baseName}-${environmentName}-${regionReference[location]}')
 var language = 'Bicep'
+var tags = resourceGroup().tags
 
 
 
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = if(!contains(tags,'AdeDevCenterName')) {
   name: logAnalyticsWorkspace
   scope: resourceGroup(logAnalyticsResourceGroup)
 }
+
 
 resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
