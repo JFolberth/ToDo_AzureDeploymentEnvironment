@@ -1,0 +1,6 @@
+version: v0.1
+testId: SampleAppTest
+displayName: Sample Test
+testPlan: SampleApp.jmx
+description: 'Load test the sample app'
+engineInstances: 1

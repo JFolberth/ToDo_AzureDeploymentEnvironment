@@ -21,6 +21,8 @@ parameters:
       catalogName: 'demo_app'
       environmentDefinitionName: 'DemoApp'
       environmentType: 'CICD'
+      regionAbrvs: ['eus']
+          
 
 stages:
 - template: stages/bicep_build_stage.yml@templates
@@ -29,11 +31,23 @@ stages:
     templateFileName: ${{ parameters.templateFileName }}
     serviceName: ${{ parameters.serviceName }}
     templateDirectory: ${{ parameters.templateDirectory }}
-- template: stages/ade_build_stage.yml@templates
+- template: stages/ade_loadtest_stage.yml@templates
   parameters:
     adeObjects: ${{ parameters.adeObjects }}
     serviceName: ${{ parameters.serviceName }}
     templateDirectory: ${{ parameters.templateDirectory }} 
+    loadTestConfigFile: 'tests/SampleApp.yaml'
+    serviceName: ${{ parameters.serviceName }}
+    envJSONObject: '
+        [
+          {
+          "name": "webapp",
+          "value": "$(webAppName).azurewebsites.net"
+          }
+        ]'
+    loadTestResourceName: 'lt-test-dev-eus'
+    loadTestResourceGroupName: 'rg-test-dev-eus'
+    
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
   - template: stages/bicep_deploy_stage.yml@templates
     parameters:
