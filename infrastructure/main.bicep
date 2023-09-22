@@ -15,9 +15,9 @@ param cosmosDBResourceGroup string
 @description('CosmosDB Name')
 param cosmosDBName string
 @description('Dev Center Project Name')
-param devCenterProjectName string =''
+param devCenterProjectName string = ''
 @description('Name for the Azure Deployment Environment')
-param adeName string = ''
+param adeName string =  ''
 
 
 var regionReference = {
@@ -30,7 +30,7 @@ var regionReference = {
 var language = 'Bicep'
 
 targetScope = 'subscription'
-var nameSuffix = empty(devCenterProjectName) && empty(adeName) ? '${devCenterProjectName}-${adeName}': toLower('${baseName}-${environmentName}-${regionReference[location]}') 
+var nameSuffix = (empty(devCenterProjectName) && empty(adeName)) ? '${devCenterProjectName}-${adeName}': toLower('${baseName}-${environmentName}-${regionReference[location]}') 
 var rgName = 'rg-${nameSuffix}'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
