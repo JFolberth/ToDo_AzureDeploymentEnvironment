@@ -37,7 +37,6 @@ stages:
     serviceName: ${{ parameters.serviceName }}
     templateDirectory: ${{ parameters.templateDirectory }} 
     loadTestConfigFile: 'tests/SampleApp.yaml'
-    serviceName: ${{ parameters.serviceName }}
     envJSONObject: '
         [
           {
