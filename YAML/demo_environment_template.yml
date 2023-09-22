@@ -46,6 +46,7 @@ stages:
         ]'
     loadTestResourceName: 'lt-test-dev-eus'
     loadTestResourceGroupName: 'rg-test-dev-eus'
+    environmentName: 'cicd'
     
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
   - template: stages/bicep_deploy_stage.yml@templates
