@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.17.1.54307",
-      "templateHash": "16703942180946397139"
+      "version": "0.21.1.54444",
+      "templateHash": "4706249061621272059"
     }
   },
   "parameters": {
@@ -83,12 +83,12 @@
       "westus2": "wus2"
     },
     "language": "Bicep",
-    "nameSuffix": "[if(and(empty(parameters('devCenterProjectName')), empty(parameters('adeName'))), format('{0}-{1}', parameters('devCenterProjectName'), parameters('adeName')), toLower(format('{0}-{1}-{2}', parameters('baseName'), parameters('environmentName'), variables('regionReference')[parameters('location')])))]",
+    "nameSuffix": "[if(empty(parameters('adeName')), toLower(format('{0}-{1}-{2}', parameters('baseName'), parameters('environmentName'), variables('regionReference')[parameters('location')])), format('{0}-{1}', parameters('devCenterProjectName'), parameters('adeName')))]",
     "rgName": "[format('rg-{0}', variables('nameSuffix'))]"
   },
   "resources": [
     {
-      "condition": "[and(empty(parameters('devCenterProjectName')), empty(parameters('adeName')))]",
+      "condition": "[not(empty(parameters('adeName')))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('resourceGroupModule{0}', variables('nameSuffix'))]",
@@ -100,7 +100,7 @@
         "mode": "Incremental",
         "parameters": {
           "baseName": {
-            "value": "[format('rg-{0}', variables('nameSuffix'))]"
+            "value": "[variables('nameSuffix')]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -116,7 +116,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "14943236022919189832"
+              "templateHash": "13910595947461257068"
             }
           },
           "parameters": {
@@ -149,7 +149,13 @@
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]"
             }
-          ]
+          ],
+          "outputs": {
+            "resourceGroupName": {
+              "type": "string",
+              "value": "[toLower(format('rg-{0}', parameters('baseName')))]"
+            }
+          }
         }
       }
     },

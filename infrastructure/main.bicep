@@ -30,7 +30,7 @@ var regionReference = {
 var language = 'Bicep'
 
 targetScope = 'subscription'
-var nameSuffix = (empty(devCenterProjectName) && empty(adeName)) ? '${devCenterProjectName}-${adeName}': toLower('${baseName}-${environmentName}-${regionReference[location]}') 
+var nameSuffix = empty(adeName) ?  toLower('${baseName}-${environmentName}-${regionReference[location]}') : '${devCenterProjectName}-${adeName}'
 var rgName = 'rg-${nameSuffix}'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
@@ -42,10 +42,10 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
-module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(empty(devCenterProjectName) && empty(adeName)) {
+module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(!empty(adeName)) {
   name: 'resourceGroupModule${nameSuffix}'
   params:{
-    baseName:('rg-${nameSuffix}')
+    baseName:nameSuffix
     location: location
     tags:{}
     }
@@ -79,10 +79,16 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
     appServicePlanID: appServicePlan.outputs.appServicePlanID
     appServiceName: nameSuffix
     principalId: userAssignedIdentity.outputs.userIdentityResrouceId
-    appSettings: {
-      'APPINSIGHTS_INSTRUMENTATIONKEY': appInsights.outputs.appInsightsInstrumentationKey
-      'ConnnectionString': 'AccountEndpoint=https://${cosmosDB.name}.documents.azure.com:443/;'
+    appSettingsArray: [
+      {
+       name:'APPINSIGHTS_INSTRUMENTATIONKEY'
+       value: appInsights.outputs.appInsightsInstrumentationKey
     }
+    {
+      name: 'ConnectionString'
+      value: 'AccountEndpoint=https://${cosmosDB.name}.documents.azure.com:443/;'
+    }
+  ]
   }
   scope: resourceGroup(rgName)
 }
