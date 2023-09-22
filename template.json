@@ -1,0 +1,79 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appServiceName": {
+            "type": "String",
+            "metadata": {
+                "description": "Name for the App Service"
+            }
+        },
+        "location": {
+            "type": "String",
+            "metadata": {
+                "description": "Location for resource."
+            }
+        },
+        "appServicePlanID": {
+            "type": "String",
+            "metadata": {
+                "description": "Resource ID of the App Service Plan"
+            }
+        },
+        "principalId": {
+            "defaultValue": "",
+            "type": "String",
+            "metadata": {
+                "description": "User Asisgned Identity for App Service"
+            }
+        },
+        "appSettings": {
+            "defaultValue": {},
+            "type": "Object",
+            "metadata": {
+                "description": "App Settings for the Application"
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "[toLower(format('app-{0}', parameters('appServiceName')))]",
+            "location": "[parameters('location')]",
+            "tags": {
+                "displayName": "Website"
+            },
+            "identity": "[if(empty(parameters('principalId')), createObject('type', 'SystemAssigned'), createObject('type', 'SystemAssigned, UserAssigned', 'userAssignedIdentities', createObject(format('{0}', parameters('principalId')), createObject())))]",
+            "properties": {
+                "serverFarmId": "[parameters('appServicePlanID')]",
+                "httpsOnly": true,
+                "siteConfig": {
+                    "minTlsVersion": "1.2",
+                    "appSettings": [
+                        "[parameters('appSettings')]"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2022-09-01",
+            "name": "[format('{0}/{1}', toLower(format('app-{0}', parameters('appServiceName'))), 'appsettings')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName'))))]"
+            ],
+            "properties": "[parameters('appSettings')]"
+        }
+    ],
+    "outputs": {
+        "appServiceManagedIdentity": {
+            "type": "String",
+            "value": "[reference(resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName')))), '2022-09-01', 'full').identity.principalId]"
+        },
+        "appServiceName": {
+            "type": "String",
+            "value": "[toLower(format('app-{0}', parameters('appServiceName')))]"
+        }
+    }
+}

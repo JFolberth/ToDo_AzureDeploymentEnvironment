@@ -22,15 +22,23 @@ parameters:
       environmentDefinitionName: 'DemoApp'
       environmentType: 'CICD'
       regionAbrvs: ['eus']
+- name: projectNamesConfigurations
+  type: object
+  default:
+    - projectName: 'todo'
+      publishWebProject: true
+      dotnetTest: false
+      
           
 
 stages:
-- template: stages/bicep_build_stage.yml@templates
+- template: stages/bicep_dotnet_build_stage.yml@templates
   parameters:
     environmentObjects: ${{ parameters.environmentObjects }}
     templateFileName: ${{ parameters.templateFileName }}
     serviceName: ${{ parameters.serviceName }}
     templateDirectory: ${{ parameters.templateDirectory }}
+    projectNamesConfigurations: ${{ parameters.projectNamesConfigurations }}
 - template: stages/ade_loadtest_stage.yml@templates
   parameters:
     adeObjects: ${{ parameters.adeObjects }}
