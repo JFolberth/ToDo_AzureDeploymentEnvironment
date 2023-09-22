@@ -40,22 +40,22 @@ stages:
     templateDirectory: ${{ parameters.templateDirectory }}
     projectNamesConfigurations: ${{ parameters.projectNamesConfigurations }}
  
-#- template: stages/ade_loadtest_stage.yml@templates
-#  parameters:
-#    adeObjects: ${{ parameters.adeObjects }}
-#    serviceName: ${{ parameters.serviceName }}
-#    templateDirectory: ${{ parameters.templateDirectory }} 
-#    loadTestConfigFile: 'tests/SampleApp.yaml'
-#    envJSONObject: '
-#        [
-#          {
-#          "name": "webapp",
-#          "value": "$(webAppName).azurewebsites.net"
-#          }
-#        ]'
-#    loadTestResourceName: 'lt-test-dev-eus'
-#    loadTestResourceGroupName: 'rg-test-dev-eus'
-#    environmentName: 'cicd'
+- template: stages/ade_loadtest_stage.yml@templates
+ parameters:
+   adeObjects: ${{ parameters.adeObjects }}
+   serviceName: ${{ parameters.serviceName }}
+   templateDirectory: ${{ parameters.templateDirectory }} 
+   loadTestConfigFile: 'tests/SampleApp.yaml'
+   envJSONObject: '
+       [
+         {
+         "name": "webapp",
+         "value": "$(webAppName).azurewebsites.net"
+         }
+       ]'
+   loadTestResourceName: 'lt-test-dev-eus'
+   loadTestResourceGroupName: 'rg-test-dev-eus'
+   environmentName: 'cicd'
     
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
   - template: stages/bicep_app_deploy_stage.yml@templates

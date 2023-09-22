@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.21.1.54444",
-      "templateHash": "4706249061621272059"
+      "version": "0.17.1.54307",
+      "templateHash": "4987515537353846836"
     }
   },
   "parameters": {
@@ -374,11 +374,17 @@
           "principalId": {
             "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityResrouceId.value]"
           },
-          "appSettings": {
-            "value": {
-              "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]",
-              "ConnnectionString": "[format('AccountEndpoint=https://{0}.documents.azure.com:443/;', parameters('cosmosDBName'))]"
-            }
+          "appSettingsArray": {
+            "value": [
+              {
+                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]"
+              },
+              {
+                "name": "ConnectionString",
+                "value": "[format('AccountEndpoint=https://{0}.documents.azure.com:443/;', parameters('cosmosDBName'))]"
+              }
+            ]
           }
         },
         "template": {
@@ -388,7 +394,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.21.1.54444",
-              "templateHash": "4136477540675855306"
+              "templateHash": "17939456747319951573"
             }
           },
           "parameters": {
@@ -417,9 +423,9 @@
                 "description": "User Asisgned Identity for App Service"
               }
             },
-            "appSettings": {
-              "type": "object",
-              "defaultValue": {},
+            "appSettingsArray": {
+              "type": "array",
+              "defaultValue": [],
               "metadata": {
                 "description": "App Settings for the Application"
               }
@@ -440,20 +446,9 @@
                 "httpsOnly": true,
                 "siteConfig": {
                   "minTlsVersion": "1.2",
-                  "appSettings": [
-                    "[parameters('appSettings')]"
-                  ]
+                  "appSettings": "[parameters('appSettingsArray')]"
                 }
               }
-            },
-            {
-              "type": "Microsoft.Web/sites/config",
-              "apiVersion": "2022-09-01",
-              "name": "[format('{0}/{1}', toLower(format('app-{0}', parameters('appServiceName'))), 'appsettings')]",
-              "properties": "[parameters('appSettings')]",
-              "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', toLower(format('app-{0}', parameters('appServiceName'))))]"
-              ]
             }
           ],
           "outputs": {
