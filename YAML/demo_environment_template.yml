@@ -63,3 +63,4 @@ stages:
       environmentObjects: ${{ parameters.environmentObjects }}
       templateFileName: ${{ parameters.templateFileName }}
       serviceName: ${{ parameters.serviceName }}
+      templateDirectory: ${{ parameters.templateDirectory }}
