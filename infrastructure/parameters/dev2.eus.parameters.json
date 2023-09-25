@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "environmentName":{
-        "value": "dev"
+        "value": "dev2"
       },
       "location":{
         "value":"eastus"
