@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "4987515537353846836"
+      "templateHash": "7604803474287523782"
     }
   },
   "parameters": {
@@ -88,7 +88,7 @@
   },
   "resources": [
     {
-      "condition": "[not(empty(parameters('adeName')))]",
+      "condition": "[empty(parameters('adeName'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('resourceGroupModule{0}', variables('nameSuffix'))]",
