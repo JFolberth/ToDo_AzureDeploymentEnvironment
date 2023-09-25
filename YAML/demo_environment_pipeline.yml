@@ -11,8 +11,5 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-- template: variables/azure_global_variables.yml@templates
-
 stages:
     - template: demo_environment_template.yml
