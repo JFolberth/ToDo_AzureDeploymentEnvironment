@@ -28,7 +28,9 @@ parameters:
     - projectName: 'todo'
       publishWebProject: true
       dotnetTest: false
-      
+- name: deploymentScope
+  type: string
+  default: 'resourceGroup'
           
 
 stages:
@@ -39,6 +41,8 @@ stages:
     serviceName: ${{ parameters.serviceName }}
     templateDirectory: ${{ parameters.templateDirectory }}
     projectNamesConfigurations: ${{ parameters.projectNamesConfigurations }}
+    deploymentScope: ${{ parameters.deploymentScope }}}
+    
  
 - template: stages/ade_loadtest_stage.yml@templates
   parameters:
@@ -58,9 +62,11 @@ stages:
     environmentName: 'cicd'
       
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
-  - template: stages/bicep_app_deploy_rg_stage.yml@templates
+  - template: stages/bicep_app_deploy_stage.yml@templates
     parameters:
       environmentObjects: ${{ parameters.environmentObjects }}
       templateFileName: ${{ parameters.templateFileName }}
       serviceName: ${{ parameters.serviceName }}
       templateDirectory: ${{ parameters.templateDirectory }}
+      dependsOn: ['${{parameters.serviceName}}_ade_build']
+      deploymentScope: ${{ parameters.deploymentScope }}}
