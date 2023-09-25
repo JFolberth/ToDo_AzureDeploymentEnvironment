@@ -73,4 +73,4 @@ stages:
       templateDirectory: ${{ parameters.templateDirectory }}
       deploymentScope: ${{ parameters.deploymentScope }}
       webAppType: ${{ parameters.webAppType}}
-      packageForLinux: '$(Pipeline.Workspace)/code/*.zip'
+      packageForLinux: '$(Pipeline.Workspace)/todo/*.zip'
