@@ -1,11 +1,11 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "14331360313600740588"
+      "templateHash": "502462350020117545"
     }
   },
   "parameters": {
@@ -91,7 +91,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "userAssignedIdentityModule",
-      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -158,7 +157,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "appServicePlanModule",
-      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -283,7 +281,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "appServiceModule",
-      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -294,19 +291,19 @@
             "value": "[parameters('location')]"
           },
           "appServicePlanID": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appServicePlanModule'), '2022-09-01').outputs.appServicePlanID.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServicePlanModule'), '2022-09-01').outputs.appServicePlanID.value]"
           },
           "appServiceName": {
             "value": "[variables('nameSuffix')]"
           },
           "principalId": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityResrouceId.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityResrouceId.value]"
           },
           "appSettingsArray": {
             "value": [
               {
                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]"
+                "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]"
               },
               {
                 "name": "ConnectionString",
@@ -392,16 +389,15 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appInsightsModule')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appServicePlanModule')]",
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
+        "[resourceId('Microsoft.Resources/deployments', 'appInsightsModule')]",
+        "[resourceId('Microsoft.Resources/deployments', 'appServicePlanModule')]",
+        "[resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "appInsightsModule",
-      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -501,7 +497,7 @@
             "value": "[parameters('cosmosDBResourceGroup')]"
           },
           "principalId": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityPrincipalOutput.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityPrincipalOutput.value]"
           }
         },
         "template": {
@@ -565,7 +561,7 @@
         }
       },
       "dependsOn": [
-        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
+        "[resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
       ]
     }
   ]
