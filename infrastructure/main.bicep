@@ -68,6 +68,7 @@ module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appser
     appServicePlanName: nameSuffix
     language: language
     appServicePlanSKU: appServicePlanSKU
+    appServiceKind: 'linux'
   }
  // scope: resourceGroup(rgName)
 }
