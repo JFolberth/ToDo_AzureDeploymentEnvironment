@@ -32,6 +32,7 @@ parameters:
   type: string
   default: 'resourceGroup'
 
+
 stages:
 - template: stages/bicep_dotnet_build_stage.yml@templates
   parameters:
