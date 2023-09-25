@@ -12,7 +12,7 @@ parameters:
   default: 'infrastructure'
 - name: serviceName
   type: string
-  default: 'adecosmosapp'
+  default: 'adecosmosapp2'
 - name: adeObjects
   type: object
   default:
@@ -31,6 +31,9 @@ parameters:
 - name: deploymentScope
   type: string
   default: 'resourceGroup'
+- name: webAppType
+  type: string
+  default: 'webAppLinux'
 
 
 stages:
@@ -69,3 +72,4 @@ stages:
       serviceName: ${{ parameters.serviceName }}
       templateDirectory: ${{ parameters.templateDirectory }}
       deploymentScope: ${{ parameters.deploymentScope }}
+      webAppType: ${{ parameters.webAppType}}
