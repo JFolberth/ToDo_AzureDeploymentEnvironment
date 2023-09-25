@@ -46,7 +46,7 @@ module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resou
   name: 'resourceGroupModule${nameSuffix}'
   params:{
     baseName:nameSuffix
-    location: location
+    location: 'eastus'
     tags:{}
     }
     scope: subscription()
