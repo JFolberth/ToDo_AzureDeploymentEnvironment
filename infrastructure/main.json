@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "7604803474287523782"
+      "templateHash": "14331360313600740588"
     }
   },
   "parameters": {
@@ -87,78 +87,6 @@
     "rgName": "[format('rg-{0}', variables('nameSuffix'))]"
   },
   "resources": [
-    {
-      "condition": "[empty(parameters('adeName'))]",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
-      "name": "[format('resourceGroupModule{0}', variables('nameSuffix'))]",
-      "location": "eastus",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "parameters": {
-          "baseName": {
-            "value": "[variables('nameSuffix')]"
-          },
-          "location": {
-            "value": "[parameters('location')]"
-          },
-          "tags": {
-            "value": {}
-          }
-        },
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.21.1.54444",
-              "templateHash": "13910595947461257068"
-            }
-          },
-          "parameters": {
-            "location": {
-              "type": "string",
-              "metadata": {
-                "description": "Location for all resources."
-              }
-            },
-            "baseName": {
-              "type": "string",
-              "defaultValue": "iacflavorsbicepASP",
-              "metadata": {
-                "description": "Base name that will appear for all resources."
-              }
-            },
-            "tags": {
-              "type": "object",
-              "defaultValue": {},
-              "metadata": {
-                "description": "Key Value Pair for tags."
-              }
-            }
-          },
-          "resources": [
-            {
-              "type": "Microsoft.Resources/resourceGroups",
-              "apiVersion": "2023-07-01",
-              "name": "[toLower(format('rg-{0}', parameters('baseName')))]",
-              "location": "[parameters('location')]",
-              "tags": "[parameters('tags')]"
-            }
-          ],
-          "outputs": {
-            "resourceGroupName": {
-              "type": "string",
-              "value": "[toLower(format('rg-{0}', parameters('baseName')))]"
-            }
-          }
-        }
-      }
-    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",

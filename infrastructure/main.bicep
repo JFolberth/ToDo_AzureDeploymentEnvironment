@@ -42,7 +42,7 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
-module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(empty(adeName)) {
+/* module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(empty(adeName)) {
   name: 'resourceGroupModule${nameSuffix}'
   params:{
     baseName:nameSuffix
@@ -50,7 +50,7 @@ module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resou
     tags:{}
     }
     scope: subscription()
-  }
+  } */
 
 module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/userassignedidentity:v1' ={
   name: 'userAssignedIdentityModule'
