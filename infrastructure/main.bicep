@@ -29,7 +29,7 @@ var regionReference = {
 
 var language = 'Bicep'
 
-//targetScope = 'subscription'
+targetScope = 'subscription'
 var nameSuffix = empty(adeName) ?  toLower('${baseName}-${environmentName}-${regionReference[location]}') : '${devCenterProjectName}-${adeName}'
 var rgName = 'rg-${nameSuffix}'
 
@@ -58,7 +58,7 @@ module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/
     location: location
     userIdentityName: nameSuffix
   }
- // scope: resourceGroup(rgName)
+  scope: resourceGroup(rgName)
 }
 
 module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appserviceplan:v1' ={
@@ -69,7 +69,7 @@ module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appser
     language: language
     appServicePlanSKU: appServicePlanSKU
   }
- // scope: resourceGroup(rgName)
+  scope: resourceGroup(rgName)
 }
 
 module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice:v1' ={
@@ -90,7 +90,7 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
     }
   ]
   }
-  //scope: resourceGroup(rgName)
+  scope: resourceGroup(rgName)
 }
 
 
@@ -102,7 +102,7 @@ module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsigh
     logAnalyticsWorkspaceID: logAnalytics.id
     language: language
   }
-  //scope: resourceGroup(rgName)
+  scope: resourceGroup(rgName)
 }
 
 module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' ={
