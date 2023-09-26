@@ -35,7 +35,7 @@ parameters:
   type: string
   default: 'webAppLinux'
 - name: artifactsToPublish
-  type: array
+  type: object
   default: ['infrastructure','tests']
 
 
