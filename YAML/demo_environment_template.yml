@@ -34,6 +34,9 @@ parameters:
 - name: webAppType
   type: string
   default: 'webAppLinux'
+- name: artifactsToPublish
+  type: array
+  default: ['infrastructure','tests']
 
 
 stages:
@@ -45,6 +48,7 @@ stages:
     templateDirectory: ${{ parameters.templateDirectory }}
     projectNamesConfigurations: ${{ parameters.projectNamesConfigurations }}
     deploymentScope: ${{ parameters.deploymentScope }}
+    artifactsToPublish: ${{ parameters.artifactsToPublish }}
     
  
 - template: stages/ade_loadtest_stage.yml@templates
