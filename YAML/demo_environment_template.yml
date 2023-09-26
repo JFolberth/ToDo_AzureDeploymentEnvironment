@@ -37,6 +37,12 @@ parameters:
 - name: artifactsToPublish
   type: object
   default: ['infrastructure','tests']
+- name: loadTestResourceGroupName
+  type: string
+  default: 'rg-loadtesting-dev-eus'
+- name: loadTestResourceName
+  type: string
+  default: 'lt-loadtesting-dev-eus'
 
 
 stages:
@@ -64,8 +70,8 @@ stages:
           "value": "$(webAppName).azurewebsites.net"
           }
         ]'
-    loadTestResourceName: 'lt-test-dev-eus'
-    loadTestResourceGroupName: 'rg-test-dev-eus'
+    loadTestResourceName: ${{ parameters.loadTestResourceName }}}
+    loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
     environmentName: 'cicd'
       
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
