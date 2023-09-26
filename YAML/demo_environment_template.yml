@@ -70,7 +70,7 @@ stages:
           "value": "$(webAppName).azurewebsites.net"
           }
         ]'
-    loadTestResourceName: ${{ parameters.loadTestResourceName }}}
+    loadTestResourceName: ${{ parameters.loadTestResourceName }}
     loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
     environmentName: 'cicd'
       
