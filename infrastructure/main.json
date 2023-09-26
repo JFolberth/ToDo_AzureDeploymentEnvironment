@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "2627434453621684495"
+      "templateHash": "12623330938153535958"
     }
   },
   "parameters": {
@@ -308,8 +308,16 @@
                 "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appInsightsModule'), '2022-09-01').outputs.appInsightsInstrumentationKey.value]"
               },
               {
-                "name": "ConnectionString",
-                "value": "[format('AccountEndpoint=https://{0}.documents.azure.com:443/;', parameters('cosmosDBName'))]"
+                "name": "CosmosDb:Account",
+                "value": "[format('https://{0}.documents.azure.com:443/', parameters('cosmosDBName'))]"
+              },
+              {
+                "name": "CosmosDb:DatabaseName",
+                "value": "Tasks"
+              },
+              {
+                "name": "CosmosDb:ContainerName",
+                "value": "Item"
               }
             ]
           }

@@ -73,8 +73,16 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
        value: appInsights.outputs.appInsightsInstrumentationKey
     }
     {
-      name: 'ConnectionString'
-      value: 'AccountEndpoint=https://${cosmosDB.name}.documents.azure.com:443/;'
+      name: 'CosmosDb:Account'
+      value: 'https://${cosmosDB.name}.documents.azure.com:443/'
+    }
+    {
+      name: 'CosmosDb:DatabaseName'
+      value: 'Tasks'
+    }
+    {
+      name: 'CosmosDb:ContainerName'
+      value: 'Item'
     }
   ]
   }
