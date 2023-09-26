@@ -31,7 +31,6 @@ var language = 'Bicep'
 
 //targetScope = 'subscription'
 var nameSuffix = empty(adeName) ?  toLower('${baseName}-${environmentName}-${regionReference[location]}') : '${devCenterProjectName}-${adeName}'
-var rgName = 'rg-${nameSuffix}'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspace
@@ -42,23 +41,12 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
-/* module  resourceGroups 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/resourcegroup:v1' = if(empty(adeName)) {
-  name: 'resourceGroupModule${nameSuffix}'
-  params:{
-    baseName:nameSuffix
-    location: 'eastus'
-    tags:{}
-    }
-    scope: subscription()
-  } */
-
 module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/userassignedidentity:v1' ={
   name: 'userAssignedIdentityModule'
   params:{
     location: location
     userIdentityName: nameSuffix
   }
- // scope: resourceGroup(rgName)
 }
 
 module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appserviceplan:v1' ={
@@ -70,7 +58,6 @@ module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appser
     appServicePlanSKU: appServicePlanSKU
     appServiceKind: 'linux'
   }
- // scope: resourceGroup(rgName)
 }
 
 module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice:v1' ={
@@ -91,7 +78,6 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
     }
   ]
   }
-  //scope: resourceGroup(rgName)
 }
 
 
@@ -103,7 +89,6 @@ module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsigh
     logAnalyticsWorkspaceID: logAnalytics.id
     language: language
   }
-  //scope: resourceGroup(rgName)
 }
 
 module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' ={

@@ -67,7 +67,7 @@ stages:
         [
           {
           "name": "webapp",
-          "value": "$(webAppName).azurewebsites.net"
+          "value": "adecosmosapp2-cicd.azurewebsites.net"
           }
         ]'
     loadTestResourceName: ${{ parameters.loadTestResourceName }}

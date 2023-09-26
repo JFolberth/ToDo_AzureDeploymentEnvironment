@@ -1,6 +1,6 @@
 {
 
-      "baseName":"dev",
+      "baseName":"adecosmosapp2-cicd",
       "location":"eastus",
       "logAnalyticsResourceGroup":"rg-logging-dev-eus",
       "logAnalyticsWorkspace":"la-logging-dev-eus",

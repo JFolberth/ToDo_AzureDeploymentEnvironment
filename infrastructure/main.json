@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "502462350020117545"
+      "templateHash": "2627434453621684495"
     }
   },
   "parameters": {
@@ -17,7 +17,7 @@
     },
     "baseName": {
       "type": "string",
-      "defaultValue": "adecosmosapp",
+      "defaultValue": "adecosmosapp2",
       "metadata": {
         "description": "Base name that will appear for all resources."
       }
@@ -83,8 +83,7 @@
       "westus2": "wus2"
     },
     "language": "Bicep",
-    "nameSuffix": "[if(empty(parameters('adeName')), toLower(format('{0}-{1}-{2}', parameters('baseName'), parameters('environmentName'), variables('regionReference')[parameters('location')])), format('{0}-{1}', parameters('devCenterProjectName'), parameters('adeName')))]",
-    "rgName": "[format('rg-{0}', variables('nameSuffix'))]"
+    "nameSuffix": "[if(empty(parameters('adeName')), toLower(format('{0}-{1}-{2}', parameters('baseName'), parameters('environmentName'), variables('regionReference')[parameters('location')])), format('{0}-{1}', parameters('devCenterProjectName'), parameters('adeName')))]"
   },
   "resources": [
     {
@@ -174,6 +173,9 @@
           },
           "appServicePlanSKU": {
             "value": "[parameters('appServicePlanSKU')]"
+          },
+          "appServiceKind": {
+            "value": "linux"
           }
         },
         "template": {
