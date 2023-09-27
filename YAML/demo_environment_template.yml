@@ -43,6 +43,9 @@ parameters:
 - name: loadTestResourceName
   type: string
   default: 'lt-loadtesting-dev-eus'
+- name: packageForLinux
+  type: string
+  default: '$(Pipeline.Workspace)/todo/*.zip'
 
 
 stages:
@@ -67,13 +70,14 @@ stages:
         [
           {
           "name": "webapp",
-          "value": "adecosmosapp2-cicd.azurewebsites.net"
+          "value": "app-adecosmosapp2-cicd-eus.azurewebsites.net"
           }
         ]'
     loadTestResourceName: ${{ parameters.loadTestResourceName }}
     loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
     environmentName: 'cicd'
-      
+    webAppType: ${{ parameters.webAppType}}
+    packageForLinux: ${{ parameters.packageForLinux}}
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
   - template: stages/bicep_app_deploy_stage.yml@templates
     parameters:
@@ -83,4 +87,4 @@ stages:
       templateDirectory: ${{ parameters.templateDirectory }}
       deploymentScope: ${{ parameters.deploymentScope }}
       webAppType: ${{ parameters.webAppType}}
-      packageForLinux: '$(Pipeline.Workspace)/todo/*.zip'
+      packageForLinux: ${{ parameters.packageForLinux}}
