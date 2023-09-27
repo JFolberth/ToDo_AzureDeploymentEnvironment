@@ -84,6 +84,14 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
       name: 'CosmosDb:ContainerName'
       value: 'Item'
     }
+    {
+      name: 'WEBSITE_RUN_FROM_PACKAGE'
+      value: '1'
+    }
+    {
+      name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
+      value: 'true'
+    }
   ]
   }
 }

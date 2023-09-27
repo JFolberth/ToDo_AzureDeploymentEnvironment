@@ -9,7 +9,7 @@
         "value":"eastus"
       },
       "appServicePlanSKU":{
-        "value":"D1"
+        "value":"B1"
       },
       "logAnalyticsResourceGroup":{
       "value": "rg-logging-dev-eus"
