@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "12623330938153535958"
+      "templateHash": "2428512712262533464"
     }
   },
   "parameters": {
@@ -318,6 +318,14 @@
               {
                 "name": "CosmosDb:ContainerName",
                 "value": "Item"
+              },
+              {
+                "name": "WEBSITE_RUN_FROM_PACKAGE",
+                "value": "1"
+              },
+              {
+                "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+                "value": "true"
               }
             ]
           }
@@ -507,7 +515,7 @@
             "value": "[parameters('cosmosDBResourceGroup')]"
           },
           "principalId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule'), '2022-09-01').outputs.userIdentityPrincipalOutput.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'appServiceModule'), '2022-09-01').outputs.appServiceManagedIdentity.value]"
           }
         },
         "template": {
@@ -571,7 +579,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'userAssignedIdentityModule')]"
+        "[resourceId('Microsoft.Resources/deployments', 'appServiceModule')]"
       ]
     }
   ]

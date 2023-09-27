@@ -113,7 +113,7 @@ module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqld
   params: {
     databaseAccountName: cosmosDB.name
     databaseAccountResourceGroup: cosmosDBResourceGroup
-    principalId: userAssignedIdentity.outputs.userIdentityPrincipalOutput
+    principalId: appService.outputs.appServiceManagedIdentity
   }
 }
 
