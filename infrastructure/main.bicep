@@ -3,7 +3,7 @@ param location string
 @description('Base name that will appear for all resources.') 
 param baseName string = 'adecosmosapp2'
 @description('Three letter environment abreviation to denote environment that will appear in all resource names') 
-param environmentName string = 'dev'
+param environmentName string = 'cicd'
 @description('App Service Plan Sku') 
 param appServicePlanSKU string = 'D1'
 @description('Resource Group Log Analytics Workspace is in')

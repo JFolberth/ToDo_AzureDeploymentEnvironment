@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "2428512712262533464"
+      "templateHash": "1458773992809888729"
     }
   },
   "parameters": {
@@ -24,7 +24,7 @@
     },
     "environmentName": {
       "type": "string",
-      "defaultValue": "dev",
+      "defaultValue": "cicd",
       "metadata": {
         "description": "Three letter environment abreviation to denote environment that will appear in all resource names"
       }
