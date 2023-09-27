@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.17.1.54307",
-      "templateHash": "1458773992809888729"
+      "templateHash": "5405776266194845598"
     }
   },
   "parameters": {
@@ -326,6 +326,10 @@
               {
                 "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
                 "value": "true"
+              },
+              {
+                "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                "value": "~2"
               }
             ]
           }

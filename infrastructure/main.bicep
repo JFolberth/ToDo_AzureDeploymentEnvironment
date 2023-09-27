@@ -92,6 +92,10 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
       name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
       value: 'true'
     }
+    {
+      name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
+      value: '~2'
+    }
   ]
   }
 }
