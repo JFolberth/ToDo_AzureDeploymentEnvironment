@@ -46,6 +46,9 @@ parameters:
 - name: packageForLinux
   type: string
   default: '$(Pipeline.Workspace)/todo/*.zip'
+- name: runADE
+  type: boolean
+  default: true
 
 
 stages:
@@ -59,25 +62,25 @@ stages:
     deploymentScope: ${{ parameters.deploymentScope }}
     artifactsToPublish: ${{ parameters.artifactsToPublish }}
     
- 
-- template: stages/ade_loadtest_stage.yml@templates
-  parameters:
-    adeObjects: ${{ parameters.adeObjects }}
-    serviceName: ${{ parameters.serviceName }}
-    templateDirectory: ${{ parameters.templateDirectory }} 
-    loadTestConfigFile: 'tests/SampleApp.yaml'
-    envJSONObject: '
-        [
-          {
-          "name": "webapp",
-          "value": "app-adecosmosapp2-cicd-eus.azurewebsites.net"
-          }
-        ]'
-    loadTestResourceName: ${{ parameters.loadTestResourceName }}
-    loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
-    environmentName: 'cicd'
-    webAppType: ${{ parameters.webAppType}}
-    packageForLinux: ${{ parameters.packageForLinux}}
+- ${{ if eq(parameters.runADE, true)}}:
+  - template: stages/ade_loadtest_stage.yml@templates
+    parameters:
+      adeObjects: ${{ parameters.adeObjects }}
+      serviceName: ${{ parameters.serviceName }}
+      templateDirectory: ${{ parameters.templateDirectory }} 
+      loadTestConfigFile: 'tests/SampleApp.yaml'
+      envJSONObject: '
+          [
+            {
+            "name": "webapp",
+            "value": "app-adecosmosapp2-cicd-eus.azurewebsites.net"
+            }
+          ]'
+      loadTestResourceName: ${{ parameters.loadTestResourceName }}
+      loadTestResourceGroupName: ${{ parameters.loadTestResourceGroupName }}
+      environmentName: 'cicd'
+      webAppType: ${{ parameters.webAppType}}
+      packageForLinux: ${{ parameters.packageForLinux}}
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
   - template: stages/bicep_app_deploy_stage.yml@templates
     parameters:
@@ -88,3 +91,4 @@ stages:
       deploymentScope: ${{ parameters.deploymentScope }}
       webAppType: ${{ parameters.webAppType}}
       packageForLinux: ${{ parameters.packageForLinux}}
+      runADE: ${{ parameters.runADE}}
