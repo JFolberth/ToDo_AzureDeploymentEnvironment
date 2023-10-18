@@ -1,13 +1,13 @@
 @description('Location for all resources.')
 param location string
-@description('Base name that will appear for all resources.') 
+@description('Base name that will appear for all resources.')
 param baseName string = 'adecosmosapp2'
-@description('Three letter environment abreviation to denote environment that will appear in all resource names') 
+@description('Three letter environment abreviation to denote environment that will appear in all resource names')
 param environmentName string = 'cicd'
-@description('App Service Plan Sku') 
+@description('App Service Plan Sku')
 param appServicePlanSKU string = 'D1'
 @description('Resource Group Log Analytics Workspace is in')
-param logAnalyticsResourceGroup string 
+param logAnalyticsResourceGroup string
 @description('Log Analytics Workspace Name')
 param logAnalyticsWorkspace string
 @description('Resource Group CosmosDB is in')
@@ -17,8 +17,7 @@ param cosmosDBName string
 @description('Dev Center Project Name')
 param devCenterProjectName string = ''
 @description('Name for the Azure Deployment Environment')
-param adeName string =  ''
-
+param adeName string = ''
 
 var regionReference = {
   centralus: 'cus'
@@ -30,28 +29,28 @@ var regionReference = {
 var language = 'Bicep'
 
 //targetScope = 'subscription'
-var nameSuffix = empty(adeName) ?  toLower('${baseName}-${environmentName}-${regionReference[location]}') : '${devCenterProjectName}-${adeName}'
+var nameSuffix = empty(adeName) ? toLower('${baseName}-${environmentName}-${regionReference[location]}') : '${devCenterProjectName}-${adeName}'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspace
   scope: resourceGroup(logAnalyticsResourceGroup)
 }
 
-resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
+resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
-module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/userassignedidentity:v1' ={
+module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/userassignedidentity:v1' = {
   name: 'userAssignedIdentityModule'
-  params:{
+  params: {
     location: location
     userIdentityName: nameSuffix
   }
 }
 
-module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appserviceplan:v1' ={
+module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appserviceplan:v1' = {
   name: 'appServicePlanModule'
-  params:{
+  params: {
     location: location
     appServicePlanName: nameSuffix
     language: language
@@ -60,50 +59,49 @@ module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appser
   }
 }
 
-module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice:v1' ={
+module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice:v1' = {
   name: 'appServiceModule'
-  params:{
+  params: {
     location: location
     appServicePlanID: appServicePlan.outputs.appServicePlanID
     appServiceName: nameSuffix
     principalId: userAssignedIdentity.outputs.userIdentityResrouceId
     appSettingsArray: [
       {
-       name:'APPINSIGHTS_INSTRUMENTATIONKEY'
-       value: appInsights.outputs.appInsightsInstrumentationKey
-    }
-    {
-      name: 'CosmosDb:Account'
-      value: 'https://${cosmosDB.name}.documents.azure.com:443/'
-    }
-    {
-      name: 'CosmosDb:DatabaseName'
-      value: 'Tasks'
-    }
-    {
-      name: 'CosmosDb:ContainerName'
-      value: 'Item'
-    }
-    {
-      name: 'WEBSITE_RUN_FROM_PACKAGE'
-      value: '1'
-    }
-    {
-      name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
-      value: 'true'
-    }
-    {
-      name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
-      value: '~2'
-    }
-  ]
+        name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+        value: appInsights.outputs.appInsightsInstrumentationKey
+      }
+      {
+        name: 'CosmosDb:Account'
+        value: 'https://${cosmosDB.name}.documents.azure.com:443/'
+      }
+      {
+        name: 'CosmosDb:DatabaseName'
+        value: 'Tasks'
+      }
+      {
+        name: 'CosmosDb:ContainerName'
+        value: 'Item'
+      }
+      {
+        name: 'WEBSITE_RUN_FROM_PACKAGE'
+        value: '1'
+      }
+      {
+        name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
+        value: 'true'
+      }
+      {
+        name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
+        value: '~2'
+      }
+    ]
   }
 }
 
-
-module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsights:v1' ={
+module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsights:v1' = {
   name: 'appInsightsModule'
-  params:{
+  params: {
     location: location
     appInsightsName: nameSuffix
     logAnalyticsWorkspaceID: logAnalytics.id
@@ -111,7 +109,7 @@ module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsigh
   }
 }
 
-module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' ={
+module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' = {
   name: 'cosmosRBACModule'
   scope: resourceGroup(cosmosDBResourceGroup)
   params: {
@@ -120,7 +118,3 @@ module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqld
     principalId: appService.outputs.appServiceManagedIdentity
   }
 }
-
-
-
-
