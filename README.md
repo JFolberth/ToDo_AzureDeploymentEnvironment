@@ -70,4 +70,5 @@ Though not required this is used for simplicity in managing and reusing pipeline
 # Additional Resources
 - [Scott Hanselman Walkthrough on Deployment Environments](https://www.youtube.com/watch?v=_rRiVELgdf4)
 - [Introduction to Azure Deployment Environment Components](https://blog.johnfolberth.com/introduction-to-azure-deployment-environment-components/)
- 
+- [Azure Deployment Environments – Creating a Developer Sandbox](https://blog.johnfolberth.com/azure-deployment-environments-creating-a-developer-sandbox/)
+- [Azure Deployment Environments – Creating an Application Sandbox](https://blog.johnfolberth.com/azure-deployment-environments-creating-an-application-sandbox/)
