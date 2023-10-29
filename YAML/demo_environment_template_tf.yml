@@ -52,7 +52,7 @@ parameters:
 
 
 stages:
-- template: stages/bicep_dotnet_build_stage.yml@templates
+- template: stages/terraform_dotnet_build_stage.yml@templates
   parameters:
     environmentObjects: ${{ parameters.environmentObjects }}
     templateFileName: ${{ parameters.templateFileName }}
