@@ -10,7 +10,7 @@ variable "app_service_location" {
 
 variable "app_service_name" {
   type        = string
-  description = "Name for the instnace of App Service"
+  description = "Name for the instance of App Service"
 }
 variable "language" {
   type        = string

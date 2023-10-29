@@ -18,14 +18,14 @@ variable "base_name" {
 }
 variable "environment_name" {
   description = "Three leter environment abreviation to denote environment that will appear in all resource names"
-  default = "dev"
+  default     = "dev"
 }
 variable "resource_group_location" {
   description = "The Azure location the Resource Group will be deployed to"
 }
 variable "service_plan_sku_name" {
   description = "SKU for the App Service Plan"
-  default = "D1"
+  default     = "D1"
 }
 
 variable "log_analytics_workspace_name" {
@@ -85,28 +85,45 @@ module "service_plan_module" {
 
 module "app_insights_module" {
   source                     = "./modules/appInsights"
-  resource_group_name   = data.azurerm_resource_group.rg.name
-  app_insights_location = var.resource_group_location
+  resource_group_name        = data.azurerm_resource_group.rg.name
+  app_insights_location      = var.resource_group_location
   app_insights_name          = local.name_suffix
   language                   = var.language
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 }
 
 module "app_service_module" {
-  source                           = "./modules/appService"
+  source                = "./modules/appService"
   resource_group_name   = data.azurerm_resource_group.rg.name
-  app_service_location             = var.resource_group_location
-  app_service_name                 = local.name_suffix
-  language                         = var.language
-  service_plan_id                  = module.service_plan_module.service_plan_id
+  app_service_location  = var.resource_group_location
+  app_service_name      = local.name_suffix
+  language              = var.language
+  service_plan_id       = module.service_plan_module.service_plan_id
   service_plan_sku_name = var.service_plan_sku_name
-  app_service_settings= {
-    "APPINSIGHTS_INSTRUMENTATIONKEY" = module.app_insights_module.instrumentation_key
-    "CosmosDb:Account"= "https://${data.azurerm_cosmosdb_account.cosmosdb_account.name}.documents.azure.com:443/"
-    "CosmosDb:DatabaseName"= "Tasks"
-    "CosmosDb:ContainerName"= "Items"
-    "WEBSITE_RUN_FROM_PACKAGE" = 1
-    "SCM_DO_BUILD_DURING_DEPLOYMENT"=true
-    "ApplicationInsightsAgent_EXTENSION_VERSION"= "~2"
+  app_service_settings = {
+    "APPINSIGHTS_INSTRUMENTATIONKEY"             = module.app_insights_module.instrumentation_key
+    "CosmosDb:Account"                           = "https://${data.azurerm_cosmosdb_account.cosmosdb_account.name}.documents.azure.com:443/"
+    "CosmosDb:DatabaseName"                      = "Tasks"
+    "CosmosDb:ContainerName"                     = "Items"
+    "WEBSITE_RUN_FROM_PACKAGE"                   = 1
+    "SCM_DO_BUILD_DURING_DEPLOYMENT"             = true
+    "ApplicationInsightsAgent_EXTENSION_VERSION" = "~2"
   }
+}
+
+module "user_assigned_identity_module" {
+  source                          = "./modules/userAssignedIdentity"
+  resource_group_name             = data.azurerm_resource_group.rg.name
+  user_assigned_identity_location = var.resource_group_location
+  user_assigned_identity_name     = local.name_suffix
+  language                        = var.language
+
+}
+
+module "cosmosdb_role_assignment_module" {
+  source                          = "./modules/cosmosSqlRoleAssignment"
+  cosmosdb_account_name           = data.azurerm_cosmosdb_account.cosmosdb_account.name
+  cosmosdb_account_resource_group = data.azurerm_cosmosdb_account.cosmosdb_account.resource_group_name
+  principal_id                    = module.user_assigned_identity_module.principal_id
+
 }
