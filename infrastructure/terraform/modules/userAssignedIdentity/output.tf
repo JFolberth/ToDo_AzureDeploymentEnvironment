@@ -1,3 +1,3 @@
-output "user_assigned_identity_id" {
-  value = azurerm_user_assigned_identity.uid.id
+output "user_assigned_identity_principal_id" {
+  value = azurerm_user_assigned_identity.uid.principal_id
 }

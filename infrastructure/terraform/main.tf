@@ -12,6 +12,8 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+provider "random" {}
 variable "base_name" {
   default     = "deployenvironmenttf"
   description = "Base name that will appear for all resources."
@@ -124,6 +126,6 @@ module "cosmosdb_role_assignment_module" {
   source                          = "./modules/cosmosSqlRoleAssignment"
   cosmosdb_account_name           = data.azurerm_cosmosdb_account.cosmosdb_account.name
   cosmosdb_account_resource_group = data.azurerm_cosmosdb_account.cosmosdb_account.resource_group_name
-  principal_id                    = module.user_assigned_identity_module.principal_id
+  principal_id                    = module.user_assigned_identity_module.user_assigned_identity_principal_id
 
 }

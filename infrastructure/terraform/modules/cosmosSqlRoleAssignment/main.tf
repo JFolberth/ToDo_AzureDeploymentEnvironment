@@ -1,5 +1,5 @@
-locals {
-  role_assignment_id = guid(var.cosmosdb_account_role_definition, var.principal_id, azurerm_cosmosdb_account.cosmosdb_account.id)
+
+resource "random_uuid" "role_assignment_id" {
 }
 data "azurerm_cosmosdb_account" "cosmosdb_account" {
   name                = var.cosmosdb_account_name
@@ -7,7 +7,7 @@ data "azurerm_cosmosdb_account" "cosmosdb_account" {
 }
 
 resource "azurerm_cosmosdb_sql_role_assignment" "cosmosdb_sql_assignment" {
-  name                = local.role_assignment_id
+  name                = random_uuid.role_assignment_id.result
   resource_group_name = var.cosmosdb_account_resource_group
   account_name        = var.cosmosdb_account_name
   role_definition_id  = var.cosmosdb_account_role_definition
