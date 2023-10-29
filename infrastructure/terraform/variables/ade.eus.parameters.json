@@ -1,0 +1,9 @@
+{
+
+      "baseName":"adecosmosapp2tf",
+      "location":"eastus",
+      "logAnalyticsResourceGroup":"rg-logging-dev-eus",
+      "logAnalyticsWorkspace":"la-logging-dev-eus",
+      "cosmosDBResourceGroup":"rg-webdata-dev-eus",
+      "cosmosDBName":"cosmoswebdatadeveus"
+    }

@@ -16,7 +16,7 @@ variable "service_plan_name" {
 variable "service_plan_os_type" {
   type        = string
   description = "Operating System for the given App Service Plan"
-  default     = "Windows"
+  default     = "Linux"
   validation {
     condition     = contains(["Windows", "Linux", "WindowsContainer"], var.service_plan_os_type)
     error_message = "Please provide a valid OS"

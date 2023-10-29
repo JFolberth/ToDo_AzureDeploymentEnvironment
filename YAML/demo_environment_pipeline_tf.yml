@@ -1,0 +1,14 @@
+resources:
+  repositories:
+  - repository: templates
+    type: github
+    name: JFolberth/TheYAMLPipelineOne
+    endpoint: JFolberth
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+    - template: demo_environment_template_tf.yml
