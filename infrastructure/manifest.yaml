@@ -1,38 +1,38 @@
 # yaml-language-server: $schema=https://github.com/Azure/deployment-environments/releases/download/2022-11-11-preview/manifest.schema.json
-name: DemoApp
+name: DemoAppTF
 version: 1.0.0
-summary: Architecture for self contained App Service
-description: Deploys app service plan, app service, and application Insights
-runner: ARM
-templatePath: main.json
+summary: Architecture for self contained App Service defined in Terraform
+description: Deploys app service plan, app service, and application Insights defined in Terraform
+runner: Terraform
+templatePath: main.tf
 
 parameters:
-  - id: baseName
+  - id: base_name
     name: Base Name for resources
     description: 'Name of the service'
     type: string
     required: true
-  - id: location
+  - id: resource_group_location
     name: Location for Resources
     description: 'Location to deploy new resources into default is eastus'
     type: string
-    required: false
-  - id: logAnalyticsResourceGroup
+    required: true
+  - id: log_analytics_workspace_resource_group_name
     name: Resource Group for Log Analytics
     description: 'The Resource Group the existing Log Analytics is deployed in'
     type: string
     required: true
-  - id: logAnalyticsWorkspace
+  - id: log_analytics_workspace_name
     name: Log Analytics Workspace
     description: 'The Resource name for an existing Log Analytics Workspaces'
     type: string
     required: true
-  - id: cosmosDBResourceGroup
+  - id: cosmosdb_account_resource_group_name
     name: Resource Group for CosmosDB
     description: 'The Resource Group the existing CosmosDB is deployed in'
     type: string
     required: true
-  - id: cosmosDBName
+  - id: cosmosdb_account_name
     name: Cosmos DB Name
     description: 'The Resource name for an existing Cosmos Database'
     type: string
