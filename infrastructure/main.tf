@@ -27,7 +27,7 @@ variable "resource_group_location" {
 }
 variable "service_plan_sku_name" {
   description = "SKU for the App Service Plan"
-  default     = "D1"
+  default     = "B1"
 }
 
 variable "log_analytics_workspace_name" {

@@ -82,7 +82,7 @@ stages:
       webAppType: ${{ parameters.webAppType}}
       packageForLinux: ${{ parameters.packageForLinux}}
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main')}}:
-  - template: stages/bicep_app_deploy_stage.yml@templates
+  - template: stages/terraform_app_deploy_stage.yml@templates
     parameters:
       environmentObjects: ${{ parameters.environmentObjects }}
       templateFileName: ${{ parameters.templateFileName }}
