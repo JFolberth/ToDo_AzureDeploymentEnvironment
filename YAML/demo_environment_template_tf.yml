@@ -9,7 +9,7 @@ parameters:
   default: 'main'
 - name: templateDirectory
   type: string 
-  default: 'infrastructure/terraform'
+  default: 'infrastructure'
 - name: serviceName
   type: string
   default: 'adecosmosapp2tf'
@@ -18,7 +18,7 @@ parameters:
   default:
     - devCenterName: 'dc-poc-dev-eus'
       projectName: 'webappdev'
-      catalogName: 'demo_app'
+      catalogName: 'demo_appTF'
       environmentDefinitionName: 'DemoAppTF'
       environmentType: 'CICD'
       regionAbrvs: ['eus']
