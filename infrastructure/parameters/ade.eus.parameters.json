@@ -1,9 +1,9 @@
 {
 
-      "baseName":"adecosmosapp2tf",
-      "location":"eastus",
-      "logAnalyticsResourceGroup":"rg-logging-dev-eus",
-      "logAnalyticsWorkspace":"la-logging-dev-eus",
-      "cosmosDBResourceGroup":"rg-webdata-dev-eus",
-      "cosmosDBName":"cosmoswebdatadeveus"
+      "base_name":"adecosmosapp2tf",
+      "resource_group_location":"eastus",
+      "log_analytics_workspace_resource_group_name":"rg-logging-dev-eus",
+      "log_analytics_workspace_name":"la-logging-dev-eus",
+      "cosmosdb_account_resource_group_name":"rg-webdata-dev-eus",
+      "cosmosdb_account_name":"cosmoswebdatadeveus"
     }
