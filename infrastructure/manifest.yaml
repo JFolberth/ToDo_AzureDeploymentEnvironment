@@ -4,7 +4,7 @@ version: 1.0.0
 summary: Architecture for self contained App Service
 description: Deploys app service plan, app service, and application Insights
 runner: Bicep
-templatePath: main.json
+templatePath: main.bicep
 
 parameters:
   - id: baseName
