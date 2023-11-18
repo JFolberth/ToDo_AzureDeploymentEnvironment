@@ -2,7 +2,7 @@
 name: DemoApp_Bicep
 version: 1.0.0
 summary: Architecture for self contained App Service
-description: Deploys app service plan, app service, and application Insights
+description: Deploys app service plan, app service, and application Insights defined in Bicep
 runner: Bicep
 templatePath: main.bicep
 
