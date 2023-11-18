@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://github.com/Azure/deployment-environments/releases/download/2022-11-11-preview/manifest.schema.json
-name: DemoApp
+name: DemoApp_Bicep
 version: 1.0.0
 summary: Architecture for self contained App Service
 description: Deploys app service plan, app service, and application Insights
-runner: ARM
+runner: Bicep
 templatePath: main.json
 
 parameters:
