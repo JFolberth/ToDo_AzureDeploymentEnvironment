@@ -15,7 +15,7 @@ provider "azurerm" {
 
 provider "random" {}
 variable "base_name" {
-  default     = "deployenvironmenttf"
+  default     = "adecosmosapp2tf"
   description = "Base name that will appear for all resources."
 }
 variable "environment_name" {
