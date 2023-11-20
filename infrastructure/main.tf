@@ -20,7 +20,7 @@ variable "base_name" {
 }
 variable "environment_name" {
   description = "Three leter environment abreviation to denote environment that will appear in all resource names"
-  default     = "dev"
+  default     = "cicd"
 }
 variable "resource_group_location" {
   description = "The Azure location the Resource Group will be deployed to"
