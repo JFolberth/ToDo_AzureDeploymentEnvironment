@@ -73,7 +73,7 @@ stages:
           [
             {
             "name": "webapp",
-            "value": "app-adecosmosapp2-cicd-eus.azurewebsites.net"
+            "value": "app-adecosmosapp2tf-cicd-eus.azurewebsites.net"
             }
           ]'
       loadTestResourceName: ${{ parameters.loadTestResourceName }}
