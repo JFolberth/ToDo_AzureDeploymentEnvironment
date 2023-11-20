@@ -18,7 +18,7 @@ parameters:
   default:
     - devCenterName: 'dc-poc-dev-eus'
       projectName: 'webappdev'
-      catalogName: 'demo_app'
+      catalogName: 'demo_app_Bicep'
       environmentDefinitionName: 'DemoApp_Bicep'
       environmentType: 'CICD'
       regionAbrvs: ['eus']
