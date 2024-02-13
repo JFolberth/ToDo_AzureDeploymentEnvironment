@@ -4,8 +4,6 @@ resources:
     type: github
     name: JFolberth/TheYAMLPipelineOne
     endpoint: JFolberth
-trigger:
-- main
 
 pool:
   vmImage: 'ubuntu-latest'
