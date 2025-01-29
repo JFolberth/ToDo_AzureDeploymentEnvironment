@@ -31,7 +31,7 @@
     },
     "appServicePlanSKU": {
       "type": "string",
-      "defaultValue": "D1",
+      "defaultValue": "B1",
       "metadata": {
         "description": "App Service Plan Sku"
       }
