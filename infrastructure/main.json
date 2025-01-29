@@ -78,6 +78,7 @@
   "variables": {
     "regionReference": {
       "centralus": "cus",
+      "northcentralus": "ncus"
       "eastus": "eus",
       "westus": "wus",
       "westus2": "wus2"
