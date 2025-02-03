@@ -54,7 +54,7 @@ properties:
     ### Install VSCode
     ### -------------------------------------
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: azd
+      id: vscode
       directives:
         allowPrerelease: true
       settings:

@@ -7,26 +7,27 @@ name: "frontend-bicep"
 
 tasks:
 
- - name: ~/winget
-    parameters:
-      downloadUrl: 'https://raw.githubusercontent.com/contoso-co/common-eng-sys/msft-git/dsc-configurations/common-config.dsc.yaml'
+- name: ~/winget
+  parameters:
+    downloadUrl: 'https://raw.githubusercontent.com/JFolberth/ToDo_AzureDeploymentEnvironment/refs/heads/main/devbox/config.yaml'
 
-  - name: ~/powershell
-    parameters:
-      command: |
-        $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User') 
-        echo  $env:Path
-        code --install-extension github.copilot
-        code --install-extension github.copilot-chat        
-        code --install-extension GitHub.vscode-github-actions
-        code --install-extension ms-vscode-remote.remote-wsl
-        code --install-extension ms-vscode-remote.remote-containers
-        code --install-extension ms-azuretools.azure-dev
-        code --install-extension ms-azuretools.vscode-docker
-        code --install-extension ms-dotnettools.csdevkit
-        code --install-extension ms-azuretools.vscode-bicep
-  - name: git-clone
-    description: Clone this repository into C:\Workspaces
-    parameters:
-      repositoryUrl: https://github.com/JFolberth/ToDo_AzureDeploymentEnvironment
-      directory: C:\Users\%USERPROFILE%\repos\ToDo_AzureDeploymentEnvironment
+- name: ~/powershell
+  parameters:
+    command: |
+      $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User') 
+      echo  $env:Path
+      code --install-extension github.copilot
+      code --install-extension github.copilot-chat        
+      code --install-extension GitHub.vscode-github-actions
+      code --install-extension ms-vscode-remote.remote-wsl
+      code --install-extension ms-vscode-remote.remote-containers
+      code --install-extension ms-azuretools.azure-dev
+      code --install-extension ms-azuretools.vscode-docker
+      code --install-extension ms-dotnettools.csdevkit
+      code --install-extension ms-azuretools.vscode-bicep
+
+- name: git-clone
+  description: Clone this repository into C:\Workspaces
+  parameters:
+    repositoryUrl: https://github.com/JFolberth/ToDo_AzureDeploymentEnvironment
+    directory: Z:\repos\ToDo_AzureDeploymentEnvironment
