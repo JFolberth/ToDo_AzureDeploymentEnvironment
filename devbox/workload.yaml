@@ -4,7 +4,6 @@
 
 $schema: "1.0"
 name: "frontend-bicep"
-
 tasks:
 
 - name: ~/winget
