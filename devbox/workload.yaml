@@ -15,15 +15,15 @@ tasks:
     command: |
       $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User') 
       echo  $env:Path
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension github.copilot
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension github.copilot-chat        
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension GitHub.vscode-github-actions
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension ms-vscode-remote.remote-wsl
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension ms-vscode-remote.remote-containers
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension ms-azuretools.azure-dev
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension ms-azuretools.vscode-docker
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension ms-dotnettools.csdevkit
-      code --extensions-dir "%ProgramFiles%\Microsoft VS Code\resources\app\extensions" --install-extension ms-azuretools.vscode-bicep
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension github.copilot
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension github.copilot-chat        
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension GitHub.vscode-github-actions
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension ms-vscode-remote.remote-wsl
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension ms-vscode-remote.remote-containers
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension ms-azuretools.azure-dev
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension ms-azuretools.vscode-docker
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension ms-dotnettools.csdevkit
+      code --extensions-dir "Program Files\Microsoft VS Code\resources\app\extensions" --install-extension ms-azuretools.vscode-bicep
 
 - name: git-clone
   description: Clone this repository into C:\Workspaces

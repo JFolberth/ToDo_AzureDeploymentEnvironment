@@ -31,18 +31,18 @@ properties:
         id: Microsoft.Git
     ### Configure Git to use Default WAM account
     ### -------------------------------------
-    # - resource: PSDscResources/Script
-    #   dependsOn:
-    #     - git
-    #   directives:
-    #     description: Configure Git to use Default WAM account
-    #   settings:
-    #     SetScript: |
-    #       $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-    #       SET GCM_MSAUTH_USEDEFAULTACCOUNT="true"
-    #       git config --global credential.msauthUseDefaultAccount true
-    #     GetScript: return $false
-    #     TestScript: return $false
+    - resource: PSDscResources/Script
+      dependsOn:
+        - git
+      directives:
+        description: Configure Git to use Default WAM account
+      settings:
+        SetScript: |
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+          SET GCM_MSAUTH_USEDEFAULTACCOUNT="true"
+          git config --global credential.msauthUseDefaultAccount true
+        GetScript: return $false
+        TestScript: return $false
     ### Install Azd
     ### -------------------------------------
     - resource: Microsoft.WinGet.DSC/WinGetPackage
