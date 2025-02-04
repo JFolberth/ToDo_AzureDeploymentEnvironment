@@ -14,7 +14,7 @@ tasks:
   parameters:
     command: |
       New-Item -ItemType Directory -Path "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions"
-      Invoke-WebRequest -Uri Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-bicep/0.33.93/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions"
+      Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-bicep/0.33.93/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\bicep.VSIXPackage"
       # $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User') 
       # echo  $env:Path
       # code --install-extension github.copilot
