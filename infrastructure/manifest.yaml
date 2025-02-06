@@ -3,7 +3,7 @@ name: DemoAppTF
 version: 1.0.0
 summary: Architecture for self contained App Service defined in Terraform
 description: Deploys app service plan, app service, and application Insights defined in Terraform
-runner: Terraform
+runner: "acradecontainersdeveus.azurecr.io/terraform:latest"
 templatePath: main.tf
 
 parameters:
