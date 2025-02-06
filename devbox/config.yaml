@@ -37,7 +37,7 @@ properties:
       directives:
         description: Configure Git to use Default WAM account
       settings:
-        SetScript: |
+        Script: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
           SET GCM_MSAUTH_USEDEFAULTACCOUNT="true"
           git config --global credential.msauthUseDefaultAccount true
@@ -65,7 +65,7 @@ properties:
       directives:
         description: Configure VS Code with Azure Extensions
       settings:
-        SetScript: |
+        Script: |
           New-Item -ItemType Directory -Path "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions"
           Invoke-WebRequest -Uri "https://github.gallery.vsassets.io/_apis/public/gallery/publisher/github/extension/copilot/1.265.1359/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\github.vsix"
           Invoke-WebRequest -Uri "https://github.gallery.vsassets.io/_apis/public/gallery/publisher/github/extension/copilot-chat/0.24.202412120/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\copilot-chat.vsix"
