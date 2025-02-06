@@ -13,20 +13,8 @@ tasks:
 - name: ~/powershell
   parameters:
     command: |
-      New-Item -ItemType Directory -Path "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions"
-      Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-bicep/0.33.93/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\bicep.VSIX"
-      # $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User') 
-      # echo  $env:Path
-      # code --install-extension github.copilot
-      # code --install-extension github.copilot-chat        
-      # code --install-extension GitHub.vscode-github-actions
-      # code --install-extension ms-vscode-remote.remote-wsl
-      # code --install-extension ms-vscode-remote.remote-containers
-      # code --install-extension ms-azuretools.azure-dev
-      # code --install-extension ms-azuretools.vscode-docker
-      # code --install-extension ms-dotnettools.csdevkit
-      # code --install-extension ms-azuretools.vscode-bicep
-
+      Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-bicep/0.33.93/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\bicep.vsix"
+      Invoke-WebRequest -Uri "https://ms-dotnettools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-dotnettools/extension/csdevkit/1.16.6/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\csdevkit.vsix"
 - name: git-clone
   description: Clone this repository into C:\Workspaces
   parameters:
