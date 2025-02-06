@@ -62,3 +62,5 @@ properties:
           Invoke-WebRequest -Uri "https://ms-vscode.gallery.vsassets.io/_apis/public/gallery/publisher/ms-vscode/extension/vscode-node-azure-pack/1.3.0/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\vscode-node-azure-pack.vsix"
           Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-azure-github-copilot/0.3.97/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\vscode-azure-github-copilot.vsix"
           Invoke-WebRequest -Uri "https://ms-vscode-remote.gallery.vsassets.io/_apis/public/gallery/publisher/ms-vscode-remote/extension/remote-containers/0.394.0/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\remote-containers.vsix"
+        GetScript: return $false
+        TestScript: return $false
