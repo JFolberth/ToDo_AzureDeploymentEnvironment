@@ -19,6 +19,11 @@ tasks:
   description: install dotnetcore
   parameters:
     package: dotnetcore-runtime.install
+    
+- name: choco
+  description: install dotnetcore 
+  parameters:
+    package: dotnetcore
 
 - name: ~/powershell
   parameters:
