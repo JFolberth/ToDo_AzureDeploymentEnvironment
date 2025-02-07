@@ -3,6 +3,8 @@ This repository is configured to be leveraged by [Azure Deployment Environments]
 
 The repository is a simple ToDo dotnet core app hosted in an App Service whose backed end data is in Cosmos DB. This repository will contain all the source code, Infrastructure as Code (IaC), Azure Deployment Environment (ADE) artifacts, and Azure DevOps YAML Pipeline code.
 
+There is a terraform version in the feature/terraform branch.
+
 # Intention
 This repository is a one stop shop to show how ADEs can be leveraged to not only build a one off developer environment; however, can be used in a CI pipeline with the following activities:
 - Create an ADE
