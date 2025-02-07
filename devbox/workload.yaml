@@ -3,7 +3,7 @@
 # In the mean time, you can still use these image definitions with inbuilt tasks on a pool directly without building an image.
 
 $schema: "1.0"
-name: "frontend-bicep"
+name: "frontend-terraform"
 tasks:
 
 - name: ~/winget
