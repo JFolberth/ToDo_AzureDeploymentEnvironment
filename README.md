@@ -5,6 +5,8 @@ The repository is a simple ToDo dotnet core app hosted in an App Service whose b
 
 There is a terraform version in the feature/terraform branch.
 
+A full demo is available at https://youtu.be/1a3RBoSTv3o?feature=shared
+
 # Intention
 This repository is a one stop shop to show how ADEs can be leveraged to not only build a one off developer environment; however, can be used in a CI pipeline with the following activities:
 - Create an ADE
