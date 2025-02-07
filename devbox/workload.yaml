@@ -19,4 +19,4 @@ tasks:
   description: Clone this repository into C:\Workspaces
   parameters:
     repositoryUrl: https://github.com/JFolberth/ToDo_AzureDeploymentEnvironment
-    directory: Z:\repos\ToDo_AzureDeploymentEnvironment
+    directory: Z:\repos
