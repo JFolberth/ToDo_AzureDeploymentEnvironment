@@ -11,9 +11,14 @@ tasks:
     downloadUrl: 'https://raw.githubusercontent.com/JFolberth/ToDo_AzureDeploymentEnvironment/refs/heads/main/devbox/config.yaml'
 
 - name: choco
-  description: install dotnetcore
+  description: install dotnetcore runtime
   parameters:
     package: dotnetcore-runtime.install
+
+- name: choco
+  description: install dotnetcore 
+  parameters:
+    package: dotnetcore
 
 - name: ~/powershell
   parameters:
