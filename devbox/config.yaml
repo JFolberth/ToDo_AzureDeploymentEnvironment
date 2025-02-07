@@ -44,7 +44,7 @@ properties:
       directives:
         allowPrerelease: true
       settings:
-        id: Microsoft.Microsoft.VisualStudioCode
+        id: Microsoft.VisualStudioCode
     - resource: PSDscResources/Script
       id: vscode-extensions
       dependsOn:
@@ -53,7 +53,8 @@ properties:
         description: Configure VS Code with Azure Extensions
       settings:
         SetScript: |
-          New-Item -ItemType Directory -Path "C:\Program Files\Microsoft VS Code\bootstrap\extensions"
+
+          New-Item -ItemType Directory -Path "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions"
           Invoke-WebRequest -Uri "https://github.gallery.vsassets.io/_apis/public/gallery/publisher/github/extension/copilot/1.265.1359/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\github.vsix"
           Invoke-WebRequest -Uri "https://github.gallery.vsassets.io/_apis/public/gallery/publisher/github/extension/copilot-chat/0.24.202412120/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\copilot-chat.vsix"
           Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/azure-dev/0.8.4/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\azure-dev.vsix"
