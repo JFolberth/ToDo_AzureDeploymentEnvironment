@@ -55,6 +55,7 @@ properties:
         SetScript: |
 
           New-Item -ItemType Directory -Path "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions"
+          Invoke-WebRequest -Uri "https://ms-dotnettools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-dotnettools/extension/vscode-dotnet-runtime/2.2.6/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\vscode-dotnet-runtime.vsix"
           Invoke-WebRequest -Uri "https://github.gallery.vsassets.io/_apis/public/gallery/publisher/github/extension/copilot/1.265.1359/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\github.vsix"
           Invoke-WebRequest -Uri "https://github.gallery.vsassets.io/_apis/public/gallery/publisher/github/extension/copilot-chat/0.24.2025020602/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\copilot-chat.vsix"
           Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/azure-dev/0.8.4/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\azure-dev.vsix"
