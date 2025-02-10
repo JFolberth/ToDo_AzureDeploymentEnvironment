@@ -20,6 +20,10 @@ variable "app_service_settings" {
   type        = map(string)
   description = "object contain the app Service settings"
 }
+variable "user_assigned_identity_id" {
+  type        = string
+  description = "ID of the User Assigned Identity"
+}
 variable "service_plan_id" {
   type        = string
   description = "App Service Plan ID the App Service will live under"
