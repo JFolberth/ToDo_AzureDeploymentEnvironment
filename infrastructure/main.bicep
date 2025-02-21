@@ -5,7 +5,7 @@ param baseName string = 'adecosmosapp2'
 @description('Three letter environment abreviation to denote environment that will appear in all resource names') 
 param environmentName string = 'cicd'
 @description('App Service Plan Sku') 
-param appServicePlanSKU string = 'D1'
+param appServicePlanSKU string = 'B1'
 @description('Resource Group Log Analytics Workspace is in')
 param logAnalyticsResourceGroup string 
 @description('Log Analytics Workspace Name')
@@ -41,7 +41,7 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing ={
   name: cosmosDBName
   scope: resourceGroup(cosmosDBResourceGroup)
 }
-module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/userassignedidentity:v1' ={
+module userAssignedIdentity 'br:acrbicepregistry.azurecr.io/module/managedidentity/userassignedidentities:v1' ={
   name: 'userAssignedIdentityModule'
   params:{
     location: location
@@ -49,7 +49,7 @@ module userAssignedIdentity 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/
   }
 }
 
-module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appserviceplan:v1' ={
+module appServicePlan 'br:acrbicepregistry.azurecr.io/module/web/serverfarms:v1' ={
   name: 'appServicePlanModule'
   params:{
     location: location
@@ -60,7 +60,7 @@ module appServicePlan 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appser
   }
 }
 
-module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice:v1' ={
+module appService 'br:acrbicepregistry.azurecr.io/module/web/sites:v1' ={
   name: 'appServiceModule'
   params:{
     location: location
@@ -101,7 +101,7 @@ module appService 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appservice
 }
 
 
-module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsights:v1' ={
+module appInsights 'br:acrbicepregistry.azurecr.io/module/insights/components:v1' ={
   name: 'appInsightsModule'
   params:{
     location: location
@@ -111,7 +111,7 @@ module appInsights 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/appinsigh
   }
 }
 
-module cosmosRBAC 'br:acrbicepregistrydeveus.azurecr.io/bicep/modules/cosmossqldbroleassignment:v1' ={
+module cosmosRBAC 'br:acrbicepregistry.azurecr.io/module/documentdb/databaseaccounts/sqldatabases/sqlroleassignment:v1' ={
   name: 'cosmosRBACModule'
   scope: resourceGroup(cosmosDBResourceGroup)
   params: {
