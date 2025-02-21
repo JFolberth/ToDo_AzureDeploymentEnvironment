@@ -67,3 +67,15 @@ properties:
           Invoke-WebRequest -Uri "https://ms-vscode-remote.gallery.vsassets.io/_apis/public/gallery/publisher/ms-vscode-remote/extension/remote-containers/0.394.0/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\remote-containers.vsix"
         GetScript: return $false
         TestScript: return $false
+    - resource: PSDscResources/Script
+      dependsOn:
+        - git
+      directives:
+        description: Configure Git to use Default WAM account
+      settings:
+        SetScript: |
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+          SET GCM_MSAUTH_USEDEFAULTACCOUNT="true"
+          git config --global credential.msauthUseDefaultAccount true
+        GetScript: return $false
+        TestScript: return $false
