@@ -8,7 +8,7 @@ resource "azurerm_windows_web_app" "app_service" {
   }
   identity {
     type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.identity.id]
+    identity_ids = [var.user_assigned_identity_id]
   }
   service_plan_id = var.service_plan_id
   https_only      = true
