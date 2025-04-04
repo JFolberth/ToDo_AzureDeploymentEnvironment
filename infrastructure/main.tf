@@ -112,7 +112,7 @@ module "app_service_module" {
     "SCM_DO_BUILD_DURING_DEPLOYMENT"             = true
     "ApplicationInsightsAgent_EXTENSION_VERSION" = "~2"
   }
-  user_assigned_identity_id = module.user_assigned_identity_module.user_assigned_identity_id
+  user_assigned_identity_id = module.user_assigned_identity_module.user_assigned_identity_principal_id
 }
 
 module "user_assigned_identity_module" {
