@@ -19,16 +19,31 @@ tasks:
   description: install dotnetcore 
   parameters:
     package: dotnetcore
-
-- name: ~/powershell
-  parameters:
-    command: |
-      Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-bicep/0.33.93/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\bicep.vsix"
-      Invoke-WebRequest -Uri "https://ms-dotnettools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-dotnettools/extension/csharp/2.63.32/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\csharp.vsix"
-      Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-azureappservice/0.25.4/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\vscode-azureappservice.vsix"
-      Invoke-WebRequest -Uri "https://ms-dotnettools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-dotnettools/extension/csdevkit/1.16.6/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\csdevkit.vsix"
 - name: git-clone
   description: Clone this repository into C:\Workspaces
   parameters:
     repositoryUrl: https://github.com/JFolberth/ToDo_AzureDeploymentEnvironment
     directory: Z:\repos
+userTasks:
+  - resource: PSDscResources/Script
+    dependsOn:
+      - git
+    directives:
+      description: Configure Git to use Default WAM account
+    settings:
+      SetScript: |
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+        SET GCM_MSAUTH_USEDEFAULTACCOUNT="true"
+        git config --global credential.msauthUseDefaultAccount true
+      GetScript: return $false
+      TestScript: return $false
+  - name: ~/powershell
+    parameters:
+      command: |
+        $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')
+        code --install-extension ms-azuretools.vscode-bicep
+        code --install-extension ms-dotnettools.csharp
+        code --install-extension ms-azuretools.vscode-azureappservice
+        code --install-extension ms-dotnettools.csdevkit
+      
+    
