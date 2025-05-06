@@ -1,0 +1,34 @@
+# NOTE: As of 1/20/2025, a bug prevents the use of inbuilt tasks with the ~ syntax for building your image into an image definition. 
+# A bugfix is rolling out, and this issue will be resolved by 1/27/2024. 
+# In the mean time, you can still use these image definitions with inbuilt tasks on a pool directly without building an image.
+
+$schema: "1.0"
+name: "frontend-bicep"
+tasks:
+
+- name: ~/winget
+  parameters:
+    downloadUrl: 'https://raw.githubusercontent.com/JFolberth/ToDo_AzureDeploymentEnvironment/refs/heads/main/devbox/config.yaml'
+
+- name: choco
+  description: install dotnetcore runtime
+  parameters:
+    package: dotnetcore-runtime.install
+
+- name: choco
+  description: install dotnetcore 
+  parameters:
+    package: dotnetcore
+
+- name: ~/powershell
+  parameters:
+    command: |
+      Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-bicep/0.33.93/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\bicep.vsix"
+      Invoke-WebRequest -Uri "https://ms-dotnettools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-dotnettools/extension/csharp/2.63.32/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\csharp.vsix"
+      Invoke-WebRequest -Uri "https://ms-azuretools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-azuretools/extension/vscode-azureappservice/0.25.4/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\vscode-azureappservice.vsix"
+      Invoke-WebRequest -Uri "https://ms-dotnettools.gallery.vsassets.io/_apis/public/gallery/publisher/ms-dotnettools/extension/csdevkit/1.16.6/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage" -OutFile "C:\Program` Files`\Microsoft` VS` `Code\bootstrap\extensions\csdevkit.vsix"
+- name: git-clone
+  description: Clone this repository into C:\Workspaces
+  parameters:
+    repositoryUrl: https://github.com/JFolberth/ToDo_AzureDeploymentEnvironment
+    directory: Z:\repos
