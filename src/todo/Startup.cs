@@ -76,12 +76,21 @@
             }
             else
             {
-                client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
+                var credential = new DefaultAzureCredential();
+                client = new Microsoft.Azure.Cosmos.CosmosClient(account, credential);
             }
             
             CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName);
-            Microsoft.Azure.Cosmos.DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            try
+            {
+                Microsoft.Azure.Cosmos.DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+                await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            }
+            catch (Microsoft.Azure.Cosmos.CosmosException ex)
+            {
+                Console.WriteLine($"CosmosException: {ex.StatusCode} - {ex.Message}");
+                throw; // Re-throw the exception after logging
+            }
 
             return cosmosDbService;
         }
