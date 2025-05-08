@@ -18,7 +18,7 @@ tasks:
 - name: choco
   description: install dotnetcore 
   parameters:
-    package: dotnetcore
+    package: dotnet-3.1-aspnetruntime
 - name: git-clone
   description: Clone this repository into C:\Workspaces
   parameters:
