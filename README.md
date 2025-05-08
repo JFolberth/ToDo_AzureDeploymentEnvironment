@@ -1,11 +1,30 @@
 # About
 This repository is configured to be leveraged by [Azure Deployment Environments](https://learn.microsoft.com/azure/deployment-environments/). 
 
-The repository is a simple ToDo dotnet core app hosted in an App Service whose backed end data is in Cosmos DB. This repository will contain all the source code, Infrastructure as Code (IaC), Azure Deployment Environment (ADE) artifacts, and Azure DevOps YAML Pipeline code.
+The repository is a simple ToDo .NET 8 app hosted in an App Service whose backed end data is in Cosmos DB. This repository will contain all the source code, Infrastructure as Code (IaC), Azure Deployment Environment (ADE) artifacts, and Azure DevOps YAML Pipeline code.
 
 There is a terraform version in the feature/terraform branch.
 
 A full demo is available at https://youtu.be/1a3RBoSTv3o?feature=shared
+
+## Upgrade Information
+- **Last Upgraded**: May 8, 2025
+- **Upgraded From**: .NET Core 3.1 to .NET 8.0
+- **Key Changes**:
+  - Updated Azure.Identity from 1.6.1 to 1.10.4
+  - Updated Microsoft.Azure.Cosmos from 3.30.1 to 3.38.1
+  - Migrated from Newtonsoft.Json to System.Text.Json
+  - Implemented nullable reference types
+  - Converted to .NET 8 minimal hosting model
+
+## Security Notes
+- **Date Identified**: May 8, 2025
+- **Known Vulnerabilities**:
+  - Azure.Identity 1.10.4 has two moderate severity vulnerabilities:
+    - [GHSA-m5vv-6r4h-3vj9](https://github.com/advisories/GHSA-m5vv-6r4h-3vj9): Vulnerability in Azure Identity libraries could lead to CertificateCredential bypass
+    - [GHSA-wvxc-855f-jvrv](https://github.com/advisories/GHSA-wvxc-855f-jvrv): ClientCertificateCredential can be exploited to bypass certificate validation
+
+  These vulnerabilities are not actively exploitable in this application as it uses Managed Identity authentication mode in Azure. The issues are related to the ClientCertificateCredential class, which is not used in this application.
 
 # Intention
 This repository is a one stop shop to show how ADEs can be leveraged to not only build a one off developer environment; however, can be used in a CI pipeline with the following activities:

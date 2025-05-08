@@ -57,12 +57,12 @@
         [ActionName("Edit")]
         public async Task<ActionResult> EditAsync(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return BadRequest();
             }
 
-            Item item = await _cosmosDbService.GetItemAsync(id);
+            Item? item = await _cosmosDbService.GetItemAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -74,12 +74,12 @@
         [ActionName("Delete")]
         public async Task<ActionResult> DeleteAsync(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return BadRequest();
             }
 
-            Item item = await _cosmosDbService.GetItemAsync(id);
+            Item? item = await _cosmosDbService.GetItemAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -100,7 +100,18 @@
         [ActionName("Details")]
         public async Task<ActionResult> DetailsAsync(string id)
         {
-            return View(await _cosmosDbService.GetItemAsync(id));
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+            
+            Item? item = await _cosmosDbService.GetItemAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            
+            return View(item);
         }
     }
 }

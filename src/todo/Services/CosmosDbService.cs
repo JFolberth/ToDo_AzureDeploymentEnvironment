@@ -10,7 +10,7 @@
 
     public class CosmosDbService : ICosmosDbService
     {
-        private Container _container;
+        private readonly Container _container;
 
         public CosmosDbService(
             CosmosClient dbClient,
@@ -30,7 +30,7 @@
             await this._container.DeleteItemAsync<Item>(id, new PartitionKey(id));
         }
 
-        public async Task<Item> GetItemAsync(string id)
+        public async Task<Item?> GetItemAsync(string id)
         {
             try
             {
@@ -41,7 +41,6 @@
             { 
                 return null;
             }
-
         }
 
         public async Task<IEnumerable<Item>> GetItemsAsync(string queryString)
